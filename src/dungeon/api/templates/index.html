@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+
+{% block title %}Dungeon Game API{% endblock %}
+
+{% block extra_head %}
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f5f5f5;
+    }
+    header {
+        background-color: #2c3e50;
+        color: white;
+        padding: 20px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    h1 {
+        margin: 0;
+        font-size: 2.5rem;
+    }
+    .subtitle {
+        font-size: 1.2rem;
+        margin-top: 10px;
+        opacity: 0.8;
+    }
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    .card {
+        background-color: white;
+        border-radius: 5px;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        flex: 1;
+        min-width: 300px;
+    }
+    h2 {
+        color: #2c3e50;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 10px;
+    }
+    ul {
+        padding-left: 20px;
+    }
+    li {
+        margin-bottom: 8px;
+    }
+    .endpoint {
+        font-family: monospace;
+        background-color: #f0f0f0;
+        padding: 2px 5px;
+        border-radius: 3px;
+    }
+    .method {
+        font-weight: bold;
+    }
+    .get {
+        color: #27ae60;
+    }
+    .post {
+        color: #2980b9;
+    }
+    .put {
+        color: #f39c12;
+    }
+    .delete {
+        color: #c0392b;
+    }
+    footer {
+        text-align: center;
+        margin-top: 40px;
+        padding: 20px;
+        color: #7f8c8d;
+        font-size: 0.9rem;
+    }
+    /* New styles for text input and display area */
+    .input-section {
+        margin-top: 30px;
+        padding: 20px;
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .input-section h2 {
+        margin-top: 0;
+    }
+    .text-input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        font-family: monospace;
+    }
+    .output-display {
+        background-color: #f0f0f0;
+        padding: 10px;
+        border-radius: 4px;
+        font-family: monospace;
+        white-space: pre-wrap;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+    .button {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+    }
+    .button:hover {
+        background-color: #2980b9;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<header>
+    <h1>Dungeon Game API</h1>
+    <div class="subtitle">A text-based adventure game with AI-generated content</div>
+</header>
+
+<div class="container">
+    <div class="card">
+        <h2>Game Endpoints</h2>
+        <ul>
+            <li><span class="endpoint">/game</span> - <span class="method get">GET</span> Start a new game session</li>
+            <li><span class="endpoint">/parser</span> - <span class="method post">POST</span> Parse and execute a command</li>
+            <li><span class="endpoint">/dungeons</span> - <span class="method get">GET</span> List available dungeons</li>
+            <li><span class="endpoint">/dungeons/{id}</span> - <span class="method get">GET</span> Get dungeon details</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h2>Session Management</h2>
+        <ul>
+            <li><span class="endpoint">/login</span> - <span class="method post">POST</span> Login with username</li>
+            <li><span class="endpoint">/logout</span> - <span class="method post">POST</span> End current session</li>
+        </ul>
+    </div>
+</div>
+
+<div class="input-section">
+    <h2>Test API Endpoints</h2>
+    <div>
+        <label for="endpoint-select">Select Endpoint:</label>
+        <select id="endpoint-select" class="text-input">
+            <option value="/dungeons">GET /dungeons</option>
+            <option value="/dungeons/1">GET /dungeons/1</option>
+            <option value="/login">POST /login</option>
+            <option value="/logout">POST /logout</option>
+        </select>
+    </div>
+    
+    <div id="request-body-section" style="display: none;">
+        <label for="request-body">Request Body (JSON):</label>
+        <textarea id="request-body" class="text-input" rows="5"></textarea>
+    </div>
+    
+    <button id="send-request" class="button">Send Request</button>
+    
+    <h3>Response:</h3>
+    <div id="response-display" class="output-display">No response yet</div>
+</div>
+
+<footer>
+    <p>Dungeon Game API &copy; 2023</p>
+</footer>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function() {
+        // Show/hide request body section based on endpoint selection
+        $('#endpoint-select').change(function() {
+            const selectedEndpoint = $(this).val();
+            if (selectedEndpoint === '/login') {
+                $('#request-body').val('{"username": "Player1"}');
+                $('#request-body-section').show();
+            } else if (selectedEndpoint === '/logout') {
+                $('#request-body').val('{}');
+                $('#request-body-section').show();
+            } else {
+                $('#request-body-section').hide();
+            }
+        });
+        
+        // Handle send request button click
+        $('#send-request').click(function() {
+            const endpoint = $('#endpoint-select').val();
+            const requestBody = $('#request-body').val();
+            
+            let requestOptions = {
+                url: endpoint,
+                method: endpoint.includes('login') || endpoint.includes('logout') ? 'POST' : 'GET',
+                contentType: 'application/json',
+                success: function(response) {
+                    $('#response-display').text(JSON.stringify(response, null, 2));
+                },
+                error: function(xhr) {
+                    $('#response-display').text('Error: ' + xhr.status + ' ' + xhr.statusText + '\n' + xhr.responseText);
+                }
+            };
+            
+            if (requestBody) {
+                try {
+                    requestOptions.data = JSON.stringify(JSON.parse(requestBody));
+                } catch (e) {
+                    $('#response-display').text('Error: Invalid JSON in request body');
+                    return;
+                }
+            }
+            
+            $.ajax(requestOptions);
+        });
+    });
+</script>
+{% endblock %} 

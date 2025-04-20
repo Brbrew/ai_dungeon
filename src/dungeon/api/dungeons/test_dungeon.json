@@ -1,0 +1,230 @@
+{ "scenario": {
+    "name": "test_dungeon",
+    "description": "Test dungeon to validate functionality",
+    "welcome_message": "Welcome to the test dungeon!",
+    "difficulty": "easy"
+},
+  "map": {
+    "rooms": {
+      "room1": {
+        "name": "Starting Room",
+        "description": "A cozy room with stone walls and a warm fireplace. This appears to be the entrance to the dungeon.",
+        "theme": "cozy",
+        "room_type": "entrance_room",
+        "room_ref_id": "room1",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false
+      },
+      "room2": {
+        "name": "Corridor Junction",
+        "description": "A wide corridor with multiple paths leading in different directions. The stone floor is worn smooth from years of use.",
+        "theme": "corridor",
+        "room_type": "corridor",
+        "room_ref_id": "room2",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false
+      },
+      "room3": {
+        "name": "Ancient Library",
+        "description": "Dusty bookshelves line the walls of this room. Ancient tomes and scrolls fill the shelves, their contents long forgotten.",
+        "theme": "library",
+        "room_type": "library",
+        "room_ref_id": "room3",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false
+      },
+      "room4": {
+        "name": "Treasure Vault",
+        "description": "A secure vault with reinforced walls. Empty treasure chests and broken lock mechanisms suggest this room has been looted.",
+        "theme": "treasure",
+        "room_type": "treasurey",
+        "room_ref_id": "room4",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false
+      },
+      "room5": {
+        "name": "Guard Room",
+        "description": "A room that once housed dungeon guards. Rusted weapons and armor are scattered about, along with the remains of a long-dead guard.",
+        "theme": "military",
+        "room_type": "guard_room",
+        "room_ref_id": "room5",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false
+      },
+      "room6": {
+        "name": "Alchemy Laboratory",
+        "description": "A laboratory filled with bubbling potions and strange apparatus. The air is thick with the scent of herbs and chemicals.",
+        "theme": "laboratory",
+        "room_type": "laboratory",
+        "room_ref_id": "room6",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false
+      },
+      "room7": {
+        "name": "Stairwell Chamber",
+        "description": "A circular chamber with a spiral staircase leading down into darkness. The walls are adorned with ancient runes that glow faintly.",
+        "theme": "stairwell",
+        "room_type": "stairwell",
+        "room_ref_id": "room7",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false
+      },
+      "room8": {
+        "name": "Secret Passage",
+        "description": "A narrow passage hidden behind a false wall. Cobwebs hang from the ceiling, suggesting this path is rarely used.",
+        "theme": "secret",
+        "room_type": "secret_room",
+        "room_ref_id": "room8",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false
+      },
+      "room9": {
+        "name": "Throne Room",
+        "description": "An opulent chamber with a grand throne at the far end. Tattered banners hang from the walls, their colors faded with age.",
+        "theme": "royal",
+        "room_type": "throne_room",
+        "room_ref_id": "room9",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false
+      },
+      "room10": {
+        "name": "Dungeon Cell",
+        "description": "A small cell with iron bars and a heavy door. The walls are covered in scratch marks, evidence of desperate attempts to escape.",
+        "theme": "prison",
+        "room_type": "cell",
+        "room_ref_id": "room10",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false
+      },
+      "room11": {
+        "name": "Armory",
+        "description": "A room filled with racks of weapons and armor. Most are rusted and broken, but a few items still gleam with deadly purpose.",
+        "theme": "armory",
+        "room_type": "armory",
+        "room_ref_id": "room11",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false
+      },
+      "room12": {
+        "name": "Crypt",
+        "description": "A solemn chamber filled with stone sarcophagi. The air is cold and still, and the walls are adorned with funerary inscriptions.",
+        "theme": "crypt",
+        "room_type": "crypt",
+        "room_ref_id": "room12",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false
+      },
+      "room13": {
+        "name": "Temple",
+        "description": "A grand temple with towering columns and a central altar. Faded religious symbols decorate the walls and floor.",
+        "theme": "temple",
+        "room_type": "temple",
+        "room_ref_id": "room13",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false
+      },
+      "room14": {
+        "name": "Garden",
+        "description": "An underground garden with bioluminescent plants that provide a soft, ethereal light. The air is fresh and fragrant.",
+        "theme": "garden",
+        "room_type": "garden",
+        "room_ref_id": "room14",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false
+      },
+      "room15": {
+        "name": "Boss Chamber",
+        "description": "A massive chamber with a raised platform at the center. The walls are covered in ancient magical runes that pulse with power.",
+        "theme": "boss",
+        "room_type": "boss_room",
+        "room_ref_id": "room15",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false
+      }
+    },
+    "connections": {
+      "room1": {
+        "north": "room2"
+      },
+      "room2": {
+        "north": "room3",
+        "east": "room4",
+        "west": "room5"
+      },
+      "room3": {
+        "north": "room6"
+      },
+      "room6": {
+        "north": "room7"
+      },
+      "room7": {
+        "north": "room9",
+        "down": "room8"
+      },
+      "room8": {
+        "north": "room10"
+      },
+      "room9": {
+        "west": "room11"
+      },
+      "room11": {
+        "north": "room12"
+      },
+      "room12": {
+        "north": "room13"
+      },
+      "room13": {
+        "east": "room14"
+      },
+      "room14": {
+        "east": "room15"
+      }
+    },
+    "visited_rooms": []
+  } 
+}

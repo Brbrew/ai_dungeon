@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}Dungeon Game - Command Interface{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="/static/css/game.css">
+{% endblock %}
+
+{% block content %}
+<div class="header">
+    <h1>Dungeon Game - {{ username }}'s Adventure</h1>
+    <div class="session-info">
+        Session ID: {{ request.cookies.get('session_id') }}
+        <br>
+        Dungeon ID: {{ dungeon.id }}
+        <br>
+        Scenario: {{ dungeon.scenario.name if dungeon.scenario else 'Default Scenario' }}
+    </div>
+</div>
+<div class="game-container">
+    <div class="output-area" id="outputArea">
+        Welcome to the Dungeon!
+        Type 'help' for a list of available commands.
+    </div>
+    <div class="command-area">
+        <input type="text" id="commandInput" class="command-input" placeholder="Enter your command...">
+        <button id="submitCommand" class="command-button">Send</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function() {
+        console.log("Document ready, initializing game...");
+        
+        // Game state
+        let initialized = 0;
+        
+        // Function to initialize the game
+        function init_game() {
+            console.log("Initializing game...");
+            if (initialized === 0) {
+                initialized = 1;
+                appendOutput("Game initialized. Type 'help' for available commands.", "system");
+                appendOutput("{{ dungeon.scenario.description if dungeon.scenario else 'Welcome to the dungeon!' }}", "system");
+                parser("look");
+            }
+        }
+        
+        // Function to append text to the output area
+        function appendOutput(text, type = "system") {
+            let className = "command-output";
+            if (type === "error") {
+                className = "error-message";
+            } else if (type === "system") {
+                className = "help-text";
+            }
+            
+            $('#outputArea').append(`<span class="${className}">${text}</span>\n`);
+            
+            // Scroll to bottom
+            $('#outputArea').scrollTop($('#outputArea')[0].scrollHeight);
+        }
+        
+        // parser function
+        function parser(command) {
+            console.log("Parsing command:", command);
+            // Send command to the parser endpoint
+            $.ajax({
+                url: '/parser/',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    command: command
+                }),
+                success: function(response) {
+                    console.log("Parser response:", response);
+                    appendOutput(response.message, "system");
+                },
+                error: function(error) {
+                    console.error("Error parsing command:", error);
+                    appendOutput(`Error: ${error.responseJSON?.detail || 'Failed to parse command'}`, "error");
+                }
+            });
+        }
+
+        // Function to send a command to the parser
+        function sendCommand(command) {
+            console.log("Sending command:", command);
+            
+            // Display command in output area
+            $('#outputArea').append(`\n<span class="command-history">> ${command}</span>\n`);
+            
+            // Call parser function 
+            parser(command);
+            
+            // Scroll to bottom
+            $('#outputArea').scrollTop($('#outputArea')[0].scrollHeight);
+        }
+        
+        // Handle command submission
+        function submitCommand() {
+            const command = $('#commandInput').val().trim();
+            if (command) {
+                sendCommand(command);
+                // Clear input
+                $('#commandInput').val('');
+            }
+        }
+        
+        // Handle command submission on button click
+        $('#submitCommand').on('click', function() {
+            console.log("Submit button clicked");
+            submitCommand();
+        });
+        
+        // Handle command submission on Enter key
+        $('#commandInput').on('keypress', function(e) {
+            if (e.which === 13) {  // Enter key
+                console.log("Enter key pressed");
+                submitCommand();
+            }
+        });
+
+        // Send initial INIT command when page loads
+        init_game();
+        //sendCommand("init");
+    });
+</script>
+{% endblock %} 

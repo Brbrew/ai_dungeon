@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Uncial Antiqua">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cinzel Decorative">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cormorant Unicase">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quattrocento">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=UnifrakturMaguntia">
+    <title>{% block title %}Dungeon Game{% endblock %}</title>
+    <!--- jQuery -->
+    <script src="/static/js/jquery-3.7.1.min.js"></script>
+    <!--- Main CSS -->
+    <link rel="stylesheet" href="/static/css/main.css">
+  
+    <!--- Extra Head -->
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    {% block content %}{% endblock %}
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html> 
