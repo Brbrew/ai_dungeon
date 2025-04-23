@@ -4,6 +4,80 @@
     "welcome_message": "Welcome to the test dungeon!",
     "difficulty": "easy"
 },
+"themes": [
+  {
+    "name": "farm",
+    "description": "",
+    "type": "exterior",
+    "music": ""
+  },
+  {
+    "name": "forest",
+    "description": "",
+    "type": "exterior",
+    "music": ""
+  },
+  {
+    "name": "swamp",
+    "description": "",
+    "type": "exterior",
+    "music": ""
+  },
+  {
+    "name": "plain",
+    "description": "",
+    "type": "exterior",
+    "music": ""
+  },
+  {
+    "name": "mountain",
+    "description": "",
+    "type": "exterior",
+    "music": ""
+  },
+  {
+    "name": "desert",
+    "description": "",
+    "type": "exterior",
+    "music": ""
+  },
+  {
+    "name": "ocean",
+    "description": "",
+    "type": "exterior",
+    "music": ""
+  },
+  {
+    "name": "castle",
+    "description": "",
+    "type": "interior",
+    "music": ""
+  },
+  {
+    "name": "house",
+    "description": "",
+    "type": "interior",
+    "music": ""
+  },
+  {
+    "name": "cave",
+    "description": "",
+    "type": "underground",
+    "music": ""
+  },
+  {
+    "name": "sewer",
+    "description": "",
+    "type": "underground",
+    "music": ""
+  },
+  {
+    "name": "crypt",
+    "description": "",
+    "type": "underground",
+    "music": ""
+  }
+],
   "map": {
     "rooms": {
       "room1": {

@@ -72,8 +72,9 @@ class DungeonResponse(BaseModel):
         }
 
 class MessageResponse(BaseModel):
-    """Generic message response."""
+    """Response model for message endpoints."""
     message: str
+    room_img: Optional[str] = None
     
     class Config:
         schema_extra = {
@@ -189,6 +190,16 @@ async def game(request: Request):
     dungeon = session_data["dungeon"]
     username = session_data["username"]
     
+    # Get the current room image
+    room_img = "/static/img/interface/default_room.webp"
+    if dungeon.map and dungeon.current_room_id:
+        try:
+            current_room = dungeon.map.get_room_by_id(UUID(dungeon.current_room_id))
+            if current_room.room_img:
+                room_img = current_room.room_img
+        except Exception as e:
+            print(f"DEBUG: Error getting current room: {e}")
+    
     # Debug: Check if the map is still available
     print(f"DEBUG: Game page loaded for {username}")
     print(f"DEBUG: Map loaded: {dungeon.map is not None}")
@@ -200,6 +211,7 @@ async def game(request: Request):
                 current_room = dungeon.map.get_room_by_id(UUID(dungeon.current_room_id))
                 print(f"DEBUG: Current room name: {current_room.name}")
                 print(f"DEBUG: Current room ref_id: {current_room.room_ref_id}")
+                print(f"DEBUG: Current room image: {current_room.room_img}")
             except Exception as e:
                 print(f"DEBUG: Error getting current room: {e}")
     else:
@@ -210,7 +222,8 @@ async def game(request: Request):
         {
             "request": request,
             "username": username,
-            "dungeon": dungeon
+            "dungeon": dungeon,
+            "room_img": room_img
         }
     )
 
@@ -236,7 +249,10 @@ async def parse_command(request: Request, command_request: CommandRequest):
     dungeon = sessions[session_id]["dungeon"]
     result = dungeon.parse_command(command_request.command)
     
-    return {"message": result.get("message", "Command processed")}
+    return {
+        "message": result.get("message", "Command processed"),
+        "room_img": result.get("room_img", "/static/img/interface/default_room.webp")
+    }
 
 @app.get("/api/dungeon", response_model=DungeonResponse, tags=["API"])
 async def get_dungeon(request: Request):
@@ -314,93 +330,128 @@ async def load_map(request: Request, file: UploadFile = File(...)):
     
     Args:
         request: The FastAPI request object
-        file: The JSON file containing the map data
+        file: The map file to load
         
     Returns:
         MapLoadResponse: Success message and room count
         
     Raises:
-        HTTPException: If no active session or invalid file
+        HTTPException: If no active session
     """
     session_id = request.cookies.get("session_id")
     
     if not session_id or session_id not in sessions:
         raise HTTPException(status_code=404, detail="No active dungeon session")
     
-    try:
-        # Read the file content
-        content = await file.read()
-        map_data = json.loads(content)
+    dungeon = sessions[session_id]["dungeon"]
+    
+    # Read the file content
+    content = await file.read()
+    map_data = json.loads(content)
+    
+    # Load the map
+    dungeon.load_map(map_data)
+    
+    return {
+        "message": "Map loaded successfully",
+        "room_count": len(dungeon.map.get_all_rooms())
+    }
+
+@app.get("/show_map", response_class=HTMLResponse, tags=["UI"])
+async def show_map(request: Request):
+    """Show the SVG representation of the current map.
+    
+    Args:
+        request: The FastAPI request object
         
-        # Create a new map
-        map_obj = Map()
+    Returns:
+        HTMLResponse: HTML page with the SVG map
         
-        # Create Room objects from the JSON data
-        room_objects = {}
-        for room_id, room_data in map_data['rooms'].items():
-            # Create a Room object
-            room = Room(
-                name=room_data['name'],
-                description=room_data['description'],
-                theme=room_data['theme'],
-                room_type=room_data['room_type'],
-                room_ref_id=room_data['room_ref_id']
-            )
-            
-            # Set additional properties
-            room.npcs = room_data['npcs']
-            room.treasures = room_data['treasures']
-            room.traps = room_data['traps']
-            room.is_dark = room_data['is_dark']
-            room.is_locked = room_data['is_locked']
-            
-            # Store the room object using room_ref_id as the key
-            room_objects[room.room_ref_id] = room
-        
-        # Add all rooms to the map
-        for room in room_objects.values():
-            map_obj.add_room(room)
-        
-        # Add connections between rooms
-        for room_ref_id, connections in map_data['connections'].items():
-            # Get the room object
-            if room_ref_id not in room_objects:
-                continue
-                
-            room = room_objects[room_ref_id]
-            
-            # Add connections
-            for direction_str, connected_room_ref_id in connections.items():
-                # Get the connected room object
-                if connected_room_ref_id not in room_objects:
-                    continue
-                    
-                connected_room = room_objects[connected_room_ref_id]
-                
-                # Connect the rooms
-                direction = Direction(direction_str)
-                map_obj.connect_rooms(room.id, connected_room.id, direction)
-        
-        # Mark visited rooms
-        for room_ref_id in map_data.get('visited_rooms', []):
-            if room_ref_id in room_objects:
-                map_obj.mark_room_visited(room_objects[room_ref_id].id)
-        
-        # Set the map in the dungeon
-        dungeon = sessions[session_id]["dungeon"]
-        dungeon.set_map(map_obj)
-        
-        # Set the current room to the first room if available
-        if room_objects:
-            first_room = next(iter(room_objects.values()))
-            dungeon.set_current_room(str(first_room.id))
-        
-        return {
-            "message": "Map loaded successfully",
-            "room_count": len(room_objects)
-        }
-        
-    except json.JSONDecodeError:
-        raise HTTPException(status_code=400, detail="Invalid JSON file")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error loading map: {str(e)}") 
+    Raises:
+        HTTPException: If no active session
+    """
+    session_id = request.cookies.get("session_id")
+    
+    if not session_id or session_id not in sessions:
+        raise HTTPException(status_code=404, detail="No active dungeon session")
+    
+    dungeon = sessions[session_id]["dungeon"]
+    
+    # Get the current room ID from the dungeon and convert it to UUID
+    current_room_id = None
+    if dungeon.current_room_id:
+        try:
+            current_room_id = UUID(dungeon.current_room_id)
+        except ValueError:
+            print(f"DEBUG: Invalid UUID format for current_room_id: {dungeon.current_room_id}")
+    
+    # Generate the SVG representation of the map
+    svg_map = dungeon.map.to_svg(current_room_id=current_room_id)
+    
+    # Create an HTML page that displays the SVG
+    html_content = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Dungeon Map</title>
+        <style>
+            body {{
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 20px;
+                background-color: #f0f0f0;
+            }}
+            .container {{
+                max-width: 95%;
+                margin: 0 auto;
+                background-color: white;
+                padding: 20px;
+                border-radius: 5px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            }}
+            h1 {{
+                color: #333;
+                text-align: center;
+            }}
+            .map-container {{
+                display: flex;
+                justify-content: center;
+                margin-top: 20px;
+                overflow: auto;
+                max-height: 80vh;
+            }}
+            .map-container svg {{
+                max-width: 100%;
+                height: auto;
+            }}
+            .back-button {{
+                display: block;
+                margin: 20px auto;
+                padding: 10px 20px;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                text-decoration: none;
+                text-align: center;
+                width: 200px;
+            }}
+            .back-button:hover {{
+                background-color: #45a049;
+            }}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Map of {dungeon.scenario.name}</h1>
+            <div class="map-container">
+                {svg_map}
+            </div>
+            <a href="/game" class="back-button">Back to Game</a>
+        </div>
+    </body>
+    </html>
+    """
+    
+    return HTMLResponse(content=html_content) 

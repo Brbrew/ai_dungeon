@@ -13,7 +13,7 @@ from dungeon.models.trap import Trap
 def theme():
     """Create a test theme."""
     return Theme(
-        name="Test Theme",
+        theme_name="Test Theme",
         description="A test theme"
     )
 

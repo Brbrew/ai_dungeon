@@ -29,6 +29,7 @@ class Room(BaseModel):
         ai_update: bool = False,
         ai_description: str = "",
         room_direction_info: str = "",
+        room_img: Optional[str] = None,
         **kwargs: Any
     ) -> None:
         """Initialize a room.
@@ -44,6 +45,7 @@ class Room(BaseModel):
             ai_update: Whether the room's AI update flag is set
             ai_description: The room's AI description
             room_direction_info: Additional information about the room's direction
+            room_img: Optional image file path for this room
             **kwargs: Additional arguments passed to BaseModel
         """
         super().__init__(**kwargs)
@@ -57,6 +59,7 @@ class Room(BaseModel):
         self._ai_update = ai_update
         self._ai_description = ai_description
         self.room_direction_info = room_direction_info
+        self._room_img = room_img
         
         # Initialize collections
         self._npcs: List[Character] = []
@@ -277,9 +280,30 @@ class Room(BaseModel):
         return self.room_direction_info
     
     def set_room_direction_info(self, value: str) -> None:
-        """Set the value of room_direction_info."""
+        """Set the room's direction information.
+        
+        Args:
+            value: The room's direction information
+        """
         self.room_direction_info = value
-        print(f"DEBUG: room_direction_info set to '{value}' for room {self.name}")
+    
+    @property
+    def room_img(self) -> Optional[str]:
+        """Get the room's image file path.
+        
+        Returns:
+            The room's image file path, or None if not set
+        """
+        return self._room_img
+    
+    @room_img.setter
+    def room_img(self, value: Optional[str]) -> None:
+        """Set the room's image file path.
+        
+        Args:
+            value: The room's image file path, or None to clear
+        """
+        self._room_img = value
     
     def to_dict(self) -> Dict[str, Any]:
         """Convert the room to a dictionary.
@@ -301,6 +325,7 @@ class Room(BaseModel):
             "traps": [str(trap.id) for trap in self._traps],
             "ai_update": self._ai_update,
             "ai_description": self._ai_description,
-            "room_direction_info": self.room_direction_info
+            "room_direction_info": self.room_direction_info,
+            "room_img": self._room_img
         })
         return result 

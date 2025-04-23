@@ -4,27 +4,70 @@
 
 {% block extra_head %}
 <link rel="stylesheet" href="/static/css/game.css">
+<style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        height: 80%;
+        position: relative;
+    }
+
+    .close-modal {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        font-size: 24px;
+        cursor: pointer;
+    }
+
+    #mapFrame {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
-<div class="header">
-    <h1>Dungeon Game - {{ username }}'s Adventure</h1>
-    <div class="session-info">
-        Session ID: {{ request.cookies.get('session_id') }}
-        <br>
-        Dungeon ID: {{ dungeon.id }}
-        <br>
-        Scenario: {{ dungeon.scenario.name if dungeon.scenario else 'Default Scenario' }}
+<div class="game_area_grid">
+    <div class="game_area_left">Left</div>
+    <div class="game_area_room">
+        <img src="{{ room_img }}" id="roomImage">
     </div>
+    <div class="game_area_npc">NPC</div>
+    <div class="game_area_message">Message</div>
+    <div class="game_area_overlay"><img src="/static/img/interface/room_overlay.webp"></div>
+    <div class="game_area_console">
+             <div class="output-area" id="outputArea">Welcome to the Dungeon!<br>Type 'help' for a list of available commands.<br><br></div>
+                <div class="command-area">
+                    <input type="text" id="commandInput" class="command-input" placeholder="Enter your command...">
+                    <button id="submitCommand" class="command-button">Send</button>
+                    <button id="showMap" class="command-button">Map</button>
+                </div>
+    </div>
+    <div class="game_area_footer">Footer</div>
+    <div class="game_area_right">Right</div>
 </div>
-<div class="game-container">
-    <div class="output-area" id="outputArea">
-        Welcome to the Dungeon!
-        Type 'help' for a list of available commands.
-    </div>
-    <div class="command-area">
-        <input type="text" id="commandInput" class="command-input" placeholder="Enter your command...">
-        <button id="submitCommand" class="command-button">Send</button>
+
+<!-- Map Modal -->
+<div id="mapModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <iframe id="mapFrame" src="/show_map"></iframe>
     </div>
 </div>
 {% endblock %}
@@ -33,6 +76,7 @@
 <script>
     $(document).ready(function() {
         console.log("Document ready, initializing game...");
+        console.log("Initial room image:", "{{ room_img }}");
         
         // Game state
         let initialized = 0;
@@ -42,8 +86,8 @@
             console.log("Initializing game...");
             if (initialized === 0) {
                 initialized = 1;
-                appendOutput("Game initialized. Type 'help' for available commands.", "system");
-                appendOutput("{{ dungeon.scenario.description if dungeon.scenario else 'Welcome to the dungeon!' }}", "system");
+                //appendOutput("Game initialized. Type 'help' for available commands.<br>", "system");
+                appendOutput("{{ dungeon.scenario.description if dungeon.scenario else 'Welcome to the dungeon!' }}<br>", "system");
                 parser("look");
             }
         }
@@ -77,6 +121,12 @@
                 success: function(response) {
                     console.log("Parser response:", response);
                     appendOutput(response.message, "system");
+                    
+                    // Update room image if available in response
+                    if (response.room_img) {
+                        console.log("Updating room image to:", response.room_img);
+                        $('#roomImage').attr('src', response.room_img);
+                    }
                 },
                 error: function(error) {
                     console.error("Error parsing command:", error);
@@ -120,6 +170,21 @@
             if (e.which === 13) {  // Enter key
                 console.log("Enter key pressed");
                 submitCommand();
+            }
+        });
+
+        // Map Modal functionality
+        $('#showMap').on('click', function() {
+            $('#mapModal').show();
+        });
+
+        $('.close-modal').on('click', function() {
+            $('#mapModal').hide();
+        });
+
+        $(window).on('click', function(e) {
+            if ($(e.target).is('#mapModal')) {
+                $('#mapModal').hide();
             }
         });
 

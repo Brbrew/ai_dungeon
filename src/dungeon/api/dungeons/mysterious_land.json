@@ -1,0 +1,368 @@
+{ "scenario": {
+    "name": "Mysterious Land",
+    "description": "A mysterious land.",
+    "welcome_message": "Welcome to the mysterious land!",
+    "difficulty": "easy"
+},
+"themes": [
+  {
+    "name": "farm",
+    "description": "A peaceful farm area with crops and animals",
+    "theme_type": "outdoor",
+    "music": "farm_theme.mp3"
+  },
+  {
+    "name": "forest",
+    "description": "A dense forest with tall trees and wildlife",
+    "theme_type": "outdoor",
+    "music": "forest_theme.mp3"
+  },
+  {
+    "name": "swamp",
+    "description": "A murky swamp with mist and strange sounds",
+    "theme_type": "outdoor",
+    "music": "swamp_theme.mp3"
+  },
+  {
+    "name": "house",
+    "description": "A cozy house with warm lighting",
+    "theme_type": "indoor",
+    "music": "house_theme.mp3"
+  },
+  {
+    "name": "castle",
+    "description": "A grand castle with stone walls and torches",
+    "theme_type": "indoor",
+    "music": "castle_theme.mp3"
+  },
+  {
+    "name": "graveyard",
+    "description": "A spooky graveyard with fog and moonlight",
+    "theme_type": "outdoor",
+    "music": "graveyard_theme.mp3"
+  },
+  {
+    "name": "crypt",
+    "description": "A dark crypt with ancient tombs",
+    "theme_type": "indoor",
+    "music": "crypt_theme.mp3"
+  }
+],
+  "map": {
+    "rooms": [
+      {
+        "name": "Starting Room",
+        "description": "A cozy room with stone walls and a warm fireplace. The door to adventure and the outside world lies before you.",
+        "theme": "house",
+        "room_type": "world_start",
+        "room_ref_id": "world_start",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img":"/static/img/theme/house/world_start.webp"
+      },
+     {
+        "name": "Farm",
+        "description": "You are in an old farm village, several windmills are in the background",
+        "theme": "farm",
+        "room_type": "farm_outside",
+        "room_ref_id": "farm_outside",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img":"/static/img/theme/farm/farm_outside.webp"
+      },
+      {
+        "name": "Grotto",
+        "description": "You are at a small grotto just outside the farm",
+        "theme": "farm",
+        "room_type": "farm_grotto",
+        "room_ref_id": "farm_grotto",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img":"/static/img/theme/farm/farm_grotto.webp"
+      },
+      {
+        "name": "Stream",
+        "description": "You are at a small stream near the farm",
+        "theme": "farm",
+        "room_type": "farm_stream",
+        "room_ref_id": "farm_stream",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img":"/static/img/theme/farm/farm_stream.webp"
+      },
+      {
+        "name": "Well",
+        "description": "You are at a large well",
+        "theme": "farm",
+        "room_type": "farm_well",
+        "room_ref_id": "farm_well",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img":"/static/img/theme/farm/farm_well.webp"
+      },
+      {
+        "name": "Forest Entrance",
+        "description": "You are at the entrance of a forest.",
+        "theme": "forest",
+        "room_type": "forest1",
+        "room_ref_id": "forest1",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img":"/static/img/theme/forest/forest1.webp"
+      },
+      {
+        "name": "Forest",
+        "description": "You are deeper in the forest",
+        "theme": "forest",
+        "room_type": "forest2",
+        "room_ref_id": "forest2",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img":"/static/img/theme/forest/forest1.webp"
+      },
+      {
+        "name": "Forest Fountain",
+        "description": "You are at a fountain in the forest.",
+        "theme": "forest",
+        "room_type": "forest_fountain",
+        "room_ref_id": "forest_fountain",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img":"/static/img/theme/forest/forest_fountain.webp"
+      },
+      {
+        "name": "Forest",
+        "description": "You are in the forest, you can go no further.",
+        "theme": "forest",
+        "room_type": "forest3",
+        "room_ref_id": "forest3",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img":"/static/img/theme/forest/forest1.webp"
+      },
+      {
+        "name": "Forest",
+        "description": "You are very, very, deep in the forest.",
+        "theme": "forest",
+        "room_type": "forest4",
+        "room_ref_id": "forest4",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img":"/static/img/theme/forest/forest1.webp"
+      },
+      {
+        "name": "Swamp Entrance",
+        "description": "You are at the entrance of a swamp.",
+        "theme": "swamp",
+        "room_type": "swamp1",
+        "room_ref_id": "swamp1",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img":"/static/img/theme/swamp/swamp_1.webp"
+      },
+      {
+        "name": "Swamp",
+        "description": "You deeper into the swamp.",
+        "theme": "swamp",
+        "room_type": "swamp2",
+        "room_ref_id": "swamp2",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img":"/static/img/theme/swamp/swamp_1.webp"
+      },
+      {
+        "name": "Swamp",
+        "description": "You are very deep into the swamp, you can go no further.",
+        "theme": "swamp",
+        "room_type": "swamp3",
+        "room_ref_id": "swamp3",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img":"/static/img/theme/swamp/swamp_2.webp"
+      },
+      {
+        "name": "Castle Exterior",
+        "description": "You are entrance of a large castle, a door to the castle is ajar.",
+        "theme": "castle",
+        "room_type": "castle_exterior",
+        "room_ref_id": "castle_exterior",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img":"/static/img/theme/castle/castle_exterior.webp"
+      },
+      {
+        "name": "Graveyard",
+        "description": "You are in a graveyard, the headstones are covered in moss and the ground is wet.",
+        "theme": "graveyard",
+        "room_type": "graveyard1",
+        "room_ref_id": "graveyard1",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img":"/static/img/theme/grave/grave_1.webp"
+      },
+      {
+        "name": "Graveyard",
+        "description": "You are in deeper into the graveyard, it's getting darker.",
+        "theme": "graveyard",
+        "room_type": "graveyard2",
+        "room_ref_id": "graveyard2",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img":"/static/img/theme/grave/grave_2.webp"
+      },
+      {
+        "name": "Crypt Entrance",
+        "description": "You are in the entrance of a crypt, you feel a sense of foreboding.",
+        "theme": "crypt",
+        "room_type": "crypt1",
+        "room_ref_id": "crypt1",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img":"/static/img/theme/grave/crypt_entrance.webp"
+      },
+      {
+        "name": "Castle Entrance Hall",
+        "description": "You are in the main entrance hall of the castle, it appears to be in ruins.",
+        "theme": "castle",
+        "room_type": "castle_entrance",
+        "room_ref_id": "castle_entrance",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img":"/static/img/theme/castle/castle_entrance.webp"
+      },
+      {
+        "name": "Castle Kitchen",
+        "description": "You are in the kitchen of the castle, it also appears to be in ruins.",
+        "theme": "castle",
+        "room_type": "castle_kitchen",
+        "room_ref_id": "castle_kitchen",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img":"/static/img/theme/castle/castle_kitchen.webp"
+      },
+      {
+        "name": "Castle Pantry",
+        "description": "You are in the pantry of the castle, it also appears to be in ruins.",
+        "theme": "castle",
+        "room_type": "castle_pantry",
+        "room_ref_id": "castle_pantry",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img":"/static/img/theme/castle/castle_pantry.webp"
+      }
+    ],
+    "connections": {
+      "world_start": {
+        "north": "farm_outside"
+      },
+      "farm_outside": {
+        "west": "farm_grotto",
+        "east": "farm_stream"
+      },
+      "farm_stream": {
+        "north": "farm_well"
+      },
+      "farm_grotto": {
+        "west": "forest1"
+      },
+      "forest1": {
+        "west": "forest2"
+      },
+      "forest2": {
+        "north": "forest_fountain"
+      },
+      "forest_fountain": {
+        "north": "forest3",
+        "west": "forest4"
+      },
+      "forest4": {
+        "west": "swamp1"
+      },
+      "swamp1": {
+        "west": "swamp2"
+      },
+      "swamp2": {
+        "west": "swamp3"
+      },
+      "forest3": {
+        "north": "castle_exterior"
+      },
+      "castle_exterior": {
+        "west": "graveyard1",
+        "north": "castle_entrance"
+      },
+      "graveyard1": {
+        "west": "graveyard2"
+      },
+      "graveyard2": {
+        "south": "crypt1"
+      },
+      "castle_entrance": {
+        "east": "castle_kitchen"
+      },
+      "castle_kitchen": {
+        "north": "castle_pantry"
+      }
+    }
+}
+}
