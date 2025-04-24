@@ -47,7 +47,7 @@ class Dungeon:
             session_id: The session ID associated with this dungeon
         """
         self.id = str(uuid.uuid4())
-        self.dungeon_file = "mysterious_land.json"  # Default dungeon file
+        self.dungeon_file = "mysterious_land_ai.json"  # mysterious_land.json
         self.session_id = session_id
         self.ai_enabled = False  # Initialize ai_enabled to True
         self.ai_generator = AIGenerator()  # Initialize the AI generator
@@ -138,9 +138,15 @@ class Dungeon:
                     theme = Theme(theme_name="default", description="A default themed area")
                     self.themes["default"] = theme
                 
+                #Use AI description if available
+                if "ai_description" in room_data:
+                    room_description = room_data["description"] = room_data["ai_description"]
+                else:
+                    room_description = room_data["description"]
+
                 room = Room(
                     name=room_data["name"],
-                    description=room_data["description"],
+                    description=room_description,
                     theme=theme,
                     room_ref_id=room_ref_id.lower(),
                     room_type=RoomType(name=room_data["room_type"].lower(), description=f"A {room_data['room_type'].lower()} room") if "room_type" in room_data else None,
@@ -762,6 +768,14 @@ class Dungeon:
         else:
             room_direction_info = "There are no exits from this room."
         
+
+        # Naughty word list; an imcomplete list to be sure, mainly added for humour
+        naughty_word_list = ["fuck", "shit", "asshole", "bitch", "cunt", "dick", "faggot", "pussy", "whore"]
+        command_words# Get room_direction_info from the current room
+
+
+
+
         # find primary action, if not primary action, return NONE
         if len(command_actions) == 0:
             # return Action.NONE
@@ -850,8 +864,6 @@ class Dungeon:
                 
                 # No direction specified
                 if len(command_directions) == 0:
-                    # Get available directions from connected rooms
-                    available_directions = []
                     if current_room and self.map:
                         try:
                             print(f"DEBUG: Current room ID: {self.current_room_id}")
@@ -861,7 +873,11 @@ class Dungeon:
                           
                     
                     if available_directions:
-                        output_message = f"What direction do you want to move in? {room_direction_info}."
+                        if remaining_command_words:
+                            invalid_direction = " ".join(remaining_command_words)
+                            output_message = f"You can't move {invalid_direction}. What direction do you want to move in? {room_direction_info}."
+                        else:
+                            output_message = f"What direction do you want to move in? {room_direction_info}."
                     else:
                         output_message = "You are stuck! There are no exits from this room."
                 else:

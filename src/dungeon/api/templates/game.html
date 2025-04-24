@@ -3,7 +3,6 @@
 {% block title %}Dungeon Game - Command Interface{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="/static/css/game.css">
 <style>
     .modal {
         display: none;
@@ -17,10 +16,10 @@
     }
 
     .modal-content {
-        background-color: #fefefe;
+        background-color: rgba(0, 0, 0, 0.7);
         margin: 5% auto;
         padding: 20px;
-        border: 1px solid #888;
+        border: 1px solid rgba(0, 0, 0, 0.7);
         width: 80%;
         height: 80%;
         position: relative;
@@ -39,30 +38,45 @@
         height: 100%;
         border: none;
     }
+
+    .game-absolute-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        z-index: 0;
+        background: url("/static/img/interface/game_background.webp");
+        background-position: 50%;
+        background-repeat: no-repeat;
+        background-size: cover;
+        overflow: hidden;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="game_area_grid">
-    <div class="game_area_left">Left</div>
-    <div class="game_area_room">
-        <img src="{{ room_img }}" id="roomImage">
+<div class="game-absolute-bg">
+    <div class="game_area_grid">
+        <div class="game_area_left">Left</div>
+        <div class="game_area_room">
+            <img src="{{ room_img }}" id="roomImage">
+        </div>
+        <div class="game_area_npc">NPC</div>
+        <div class="game_area_message">Message</div>
+        <div class="game_area_overlay"><img src="/static/img/interface/room_overlay.webp"></div>
+        <div class="game_area_console">
+                <div class="output-area" id="outputArea">Welcome to the Dungeon!<br>Type 'help' for a list of available commands.<br><br></div>
+                    <div class="command-area">
+                        <input type="text" id="commandInput" class="command-input" placeholder="Enter your command...">
+                        <button id="submitCommand" class="command-button">Send</button>
+                        <button id="showMap" class="command-button">Map</button>
+                    </div>
+        </div>
+        <div class="game_area_footer">Footer</div>
+        <div class="game_area_right">Right</div>
     </div>
-    <div class="game_area_npc">NPC</div>
-    <div class="game_area_message">Message</div>
-    <div class="game_area_overlay"><img src="/static/img/interface/room_overlay.webp"></div>
-    <div class="game_area_console">
-             <div class="output-area" id="outputArea">Welcome to the Dungeon!<br>Type 'help' for a list of available commands.<br><br></div>
-                <div class="command-area">
-                    <input type="text" id="commandInput" class="command-input" placeholder="Enter your command...">
-                    <button id="submitCommand" class="command-button">Send</button>
-                    <button id="showMap" class="command-button">Map</button>
-                </div>
-    </div>
-    <div class="game_area_footer">Footer</div>
-    <div class="game_area_right">Right</div>
 </div>
-
 <!-- Map Modal -->
 <div id="mapModal" class="modal">
     <div class="modal-content">
@@ -145,6 +159,11 @@
             // Call parser function 
             parser(command);
             
+            // Update map if it's visible
+            if ($('#mapModal').is(':visible')) {
+                updateMap();
+            }
+            
             // Scroll to bottom
             $('#outputArea').scrollTop($('#outputArea')[0].scrollHeight);
         }
@@ -176,7 +195,21 @@
         // Map Modal functionality
         $('#showMap').on('click', function() {
             $('#mapModal').show();
+            updateMap();
         });
+
+        function updateMap() {
+            $.ajax({
+                url: '/api/map/svg',
+                method: 'GET',
+                success: function(svg) {
+                    $('#mapFrame').contents().find('body').html(svg);
+                },
+                error: function(error) {
+                    console.error("Error updating map:", error);
+                }
+            });
+        }
 
         $('.close-modal').on('click', function() {
             $('#mapModal').hide();

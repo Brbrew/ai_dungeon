@@ -448,10 +448,42 @@ async def show_map(request: Request):
             <div class="map-container">
                 {svg_map}
             </div>
-            <a href="/game" class="back-button">Back to Game</a>
         </div>
     </body>
     </html>
     """
     
-    return HTMLResponse(content=html_content) 
+    return HTMLResponse(content=html_content)
+
+@app.get("/api/map/svg", response_class=HTMLResponse, tags=["API"])
+async def get_map_svg(request: Request):
+    """Get the SVG representation of the current map.
+    
+    Args:
+        request: The FastAPI request object
+        
+    Returns:
+        HTMLResponse: The SVG content
+        
+    Raises:
+        HTTPException: If no active session
+    """
+    session_id = request.cookies.get("session_id")
+    
+    if not session_id or session_id not in sessions:
+        raise HTTPException(status_code=404, detail="No active dungeon session")
+    
+    dungeon = sessions[session_id]["dungeon"]
+    
+    # Get the current room ID from the dungeon and convert it to UUID
+    current_room_id = None
+    if dungeon.current_room_id:
+        try:
+            current_room_id = UUID(dungeon.current_room_id)
+        except ValueError:
+            print(f"DEBUG: Invalid UUID format for current_room_id: {dungeon.current_room_id}")
+    
+    # Generate the SVG representation of the map
+    svg_map = dungeon.map.to_svg(current_room_id=current_room_id)
+    
+    return HTMLResponse(content=svg_map) 

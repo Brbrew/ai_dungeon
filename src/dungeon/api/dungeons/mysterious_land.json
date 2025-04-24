@@ -61,7 +61,9 @@
         "traps": [],
         "is_dark": false,
         "is_locked": false,
-        "room_img":"/static/img/theme/house/world_start.webp"
+        "room_img":"/static/img/theme/house/world_start.webp",
+        "ai_update": false,
+        "ai_description": ""
       },
      {
         "name": "Farm",
@@ -74,7 +76,9 @@
         "traps": [],
         "is_dark": false,
         "is_locked": false,
-        "room_img":"/static/img/theme/farm/farm_outside.webp"
+        "room_img":"/static/img/theme/farm/farm_outside.webp",
+        "ai_update": false,
+        "ai_description": ""
       },
       {
         "name": "Grotto",
@@ -87,7 +91,9 @@
         "traps": [],
         "is_dark": false,
         "is_locked": false,
-        "room_img":"/static/img/theme/farm/farm_grotto.webp"
+        "room_img":"/static/img/theme/farm/farm_grotto.webp",
+        "ai_update": false,
+        "ai_description": ""
       },
       {
         "name": "Stream",
@@ -100,7 +106,9 @@
         "traps": [],
         "is_dark": false,
         "is_locked": false,
-        "room_img":"/static/img/theme/farm/farm_stream.webp"
+        "room_img":"/static/img/theme/farm/farm_stream.webp",
+        "ai_update": false,
+        "ai_description": ""
       },
       {
         "name": "Well",
@@ -113,7 +121,9 @@
         "traps": [],
         "is_dark": false,
         "is_locked": false,
-        "room_img":"/static/img/theme/farm/farm_well.webp"
+        "room_img":"/static/img/theme/farm/farm_well.webp",
+        "ai_update": false,
+        "ai_description": ""
       },
       {
         "name": "Forest Entrance",
@@ -126,7 +136,9 @@
         "traps": [],
         "is_dark": false,
         "is_locked": false,
-        "room_img":"/static/img/theme/forest/forest1.webp"
+        "room_img":"/static/img/theme/forest/forest1.webp",
+        "ai_update": false,
+        "ai_description": ""
       },
       {
         "name": "Forest",
@@ -139,7 +151,9 @@
         "traps": [],
         "is_dark": false,
         "is_locked": false,
-        "room_img":"/static/img/theme/forest/forest1.webp"
+        "room_img":"/static/img/theme/forest/forest1.webp",
+        "ai_update": false,
+        "ai_description": ""
       },
       {
         "name": "Forest Fountain",
@@ -152,7 +166,9 @@
         "traps": [],
         "is_dark": false,
         "is_locked": false,
-        "room_img":"/static/img/theme/forest/forest_fountain.webp"
+        "room_img":"/static/img/theme/forest/forest_fountain.webp",
+        "ai_update": false,
+        "ai_description": ""
       },
       {
         "name": "Forest",
@@ -165,7 +181,9 @@
         "traps": [],
         "is_dark": false,
         "is_locked": false,
-        "room_img":"/static/img/theme/forest/forest1.webp"
+        "room_img":"/static/img/theme/forest/forest1.webp",
+        "ai_update": false,
+        "ai_description": ""
       },
       {
         "name": "Forest",
@@ -178,7 +196,9 @@
         "traps": [],
         "is_dark": false,
         "is_locked": false,
-        "room_img":"/static/img/theme/forest/forest1.webp"
+        "room_img":"/static/img/theme/forest/forest1.webp",
+        "ai_update": false,
+        "ai_description": ""
       },
       {
         "name": "Swamp Entrance",
@@ -191,7 +211,9 @@
         "traps": [],
         "is_dark": false,
         "is_locked": false,
-        "room_img":"/static/img/theme/swamp/swamp_1.webp"
+        "room_img":"/static/img/theme/swamp/swamp1.webp",
+        "ai_update": false,
+        "ai_description": ""
       },
       {
         "name": "Swamp",
@@ -204,7 +226,9 @@
         "traps": [],
         "is_dark": false,
         "is_locked": false,
-        "room_img":"/static/img/theme/swamp/swamp_1.webp"
+        "room_img":"/static/img/theme/swamp/swamp_1.webp",
+        "ai_update": false,
+        "ai_description": ""
       },
       {
         "name": "Swamp",
@@ -217,7 +241,9 @@
         "traps": [],
         "is_dark": false,
         "is_locked": false,
-        "room_img":"/static/img/theme/swamp/swamp_2.webp"
+        "room_img":"/static/img/theme/swamp/swamp_2.webp",
+        "ai_update": false,
+        "ai_description": ""
       },
       {
         "name": "Castle Exterior",
@@ -230,7 +256,9 @@
         "traps": [],
         "is_dark": false,
         "is_locked": false,
-        "room_img":"/static/img/theme/castle/castle_exterior.webp"
+        "room_img":"/static/img/theme/castle/castle_exterior.webp",
+        "ai_update": false,
+        "ai_description": ""
       },
       {
         "name": "Graveyard",
@@ -243,7 +271,9 @@
         "traps": [],
         "is_dark": false,
         "is_locked": false,
-        "room_img":"/static/img/theme/grave/grave_1.webp"
+        "room_img":"/static/img/theme/grave/grave_1.webp",
+        "ai_update": false,
+        "ai_description": ""
       },
       {
         "name": "Graveyard",
@@ -256,7 +286,9 @@
         "traps": [],
         "is_dark": false,
         "is_locked": false,
-        "room_img":"/static/img/theme/grave/grave_2.webp"
+        "room_img":"/static/img/theme/grave/grave_2.webp",
+        "ai_update": false,
+        "ai_description": ""
       },
       {
         "name": "Crypt Entrance",
@@ -269,7 +301,9 @@
         "traps": [],
         "is_dark": false,
         "is_locked": false,
-        "room_img":"/static/img/theme/grave/crypt_entrance.webp"
+        "room_img":"/static/img/theme/grave/crypt_entrance.webp",
+        "ai_update": false,
+        "ai_description": ""
       },
       {
         "name": "Castle Entrance Hall",
@@ -282,7 +316,9 @@
         "traps": [],
         "is_dark": false,
         "is_locked": false,
-        "room_img":"/static/img/theme/castle/castle_entrance.webp"
+        "room_img":"/static/img/theme/castle/castle_entrance.webp",
+        "ai_update": false,
+        "ai_description": ""
       },
       {
         "name": "Castle Kitchen",
@@ -295,7 +331,9 @@
         "traps": [],
         "is_dark": false,
         "is_locked": false,
-        "room_img":"/static/img/theme/castle/castle_kitchen.webp"
+        "room_img":"/static/img/theme/castle/castle_kitchen.webp",
+        "ai_update": false,
+        "ai_description": ""
       },
       {
         "name": "Castle Pantry",
@@ -308,7 +346,9 @@
         "traps": [],
         "is_dark": false,
         "is_locked": false,
-        "room_img":"/static/img/theme/castle/castle_pantry.webp"
+        "room_img":"/static/img/theme/castle/castle_pantry.webp",
+        "ai_update": false,
+        "ai_description": ""
       }
     ],
     "connections": {
