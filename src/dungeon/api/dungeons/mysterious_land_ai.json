@@ -1,0 +1,601 @@
+{
+  "scenario": {
+    "name": "Mysterious Land",
+    "description": "A mysterious land.",
+    "welcome_message": "Welcome to the mysterious land!",
+    "difficulty": "easy"
+  },
+  "themes": [
+    {
+      "name": "farm",
+      "description": "A peaceful farm area with crops and animals",
+      "theme_type": "outdoor",
+      "music": "farm_theme.mp3"
+    },
+    {
+      "name": "forest",
+      "description": "A dense forest with tall trees and wildlife",
+      "theme_type": "outdoor",
+      "music": "forest_theme.mp3"
+    },
+    {
+      "name": "swamp",
+      "description": "A murky swamp with mist and strange sounds",
+      "theme_type": "outdoor",
+      "music": "swamp_theme.mp3"
+    },
+    {
+      "name": "house",
+      "description": "A cozy house with warm lighting",
+      "theme_type": "indoor",
+      "music": "house_theme.mp3"
+    },
+    {
+      "name": "castle",
+      "description": "A grand castle with stone walls and torches",
+      "theme_type": "indoor",
+      "music": "castle_theme.mp3"
+    },
+    {
+      "name": "graveyard",
+      "description": "A spooky graveyard with fog and moonlight",
+      "theme_type": "outdoor",
+      "music": "graveyard_theme.mp3"
+    },
+    {
+      "name": "crypt",
+      "description": "A dark crypt with ancient tombs",
+      "theme_type": "indoor",
+      "music": "crypt_theme.mp3"
+    }
+  ],
+  "map": {
+    "rooms": [
+      {
+        "name": "Starting Room",
+        "description": "A cozy room with stone walls and a warm fireplace. The door to adventure and the outside world lies before you.",
+        "theme": "house",
+        "room_type": "world_start",
+        "room_ref_id": "world_start",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img": "/static/img/theme/house/world_start.webp",
+        "ai_update": true,
+        "ai_description": "As you step into this humble abode, the warmth of the stone walls envelops you, carrying the scent of aged mortar and the faint echo of past gatherings. The room is bathed in the golden glow of a crackling fireplace, its flames dancing merrily and casting shadows that seem to tell their own tales. The air is thick with the aroma of burning wood and the faint hint of earthy dampness, a reminder of the world beyond these comforting confines. The hearth, with its blackened stones, stands as a testament to countless nights of warmth and companionship, its embers now a gentle whisper of the life that once thrived here.\n\nBefore you lies the threshold, a sturdy oak door adorned with iron hinges, its surface weathered by the touch of countless hands over the years. It stands as the last bastion of comfort before the unknown, a portal to the vast and untamed world beyond. The door, slightly ajar, beckons with a soft creak, promising adventure and the whispers of distant lands. As you stand there, the warmth of the fire at your back, you can feel the weight of the journey ahead, the promise of untold wonders, and the lingering embrace of the home you are about to leave behind."
+      },
+      {
+        "name": "Farm",
+        "description": "You are in an old farm village, several windmills are in the background",
+        "theme": "farm",
+        "room_type": "farm_outside",
+        "room_ref_id": "farm_outside",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img": "/static/img/theme/farm/farm_outside.webp",
+        "ai_update": true,
+        "ai_description": "As you step into the old farm village, the rhythmic creak of weathered windmills greets you, their sails lazily turning in the breeze like giant, sentinel wings against a sky painted with the hues of harvest. The thatched roofs of the cottages, worn smooth by time, blend seamlessly into the rolling landscape, while golden fields stretch out in every direction, dotted with sheaves of ripe grain. The earthy scent of freshly turned soil mingles with the faint sweetness of ripening crops, carried on the wind that whispers through the village.\n\nThe village is alive with the sounds of rural life\u2014chickens cluck in the distance, and the occasional lowing of cattle drifts from a nearby barn. Narrow, dirt paths wind between the cottages, lined with wildflowers that add splashes of color to the scene. The air is thick with the promise of a bountiful harvest, and the atmosphere is one of quiet industry, as if the very land itself is holding its breath in anticipation of the next season. The windmills stand as silent guardians, their aged wooden beams bearing the scars of countless seasons, each creak a testament to the enduring heartbeat of this timeless village."
+      },
+      {
+        "name": "Grotto",
+        "description": "You are at a small grotto just outside the farm",
+        "theme": "farm",
+        "room_type": "farm_grotto",
+        "room_ref_id": "farm_grotto",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img": "/static/img/theme/farm/farm_grotto.webp",
+        "ai_update": true,
+        "ai_description": "The air clings to the faint scent of damp earth and the faintest whisper of hay as you step into the small grotto. The space is modest, a natural pocket in the land, its rough stone walls glistening faintly with the moisture that seeps through the ground. A sliver of light filters through the narrow opening, casting a warm glow on the uneven floor, where a few scattered pebbles glimmer like forgotten treasures. The sound of distant birds and the faint rustle of wind through the fields drift into the grotto, giving it a sense of seclusion, yet not isolation. The walls bear faint signs of use\u2014old, weathered tools lean against one corner, and a rusted feeding trough sits in another, as though this place has served as a quiet refuge for weary hands over the years.\n\nAs your eyes adjust to the dim light, you notice the grotto\u2019s entrance frames a view of the rolling fields beyond, golden wheat swaying gently in the breeze. In the distance, the faint outline of a farmhouse rises, its chimney trailing a thin plume of smoke into the sky. The air carries the faint scent of fresh earth and growing crops, a reminder of the life and labor that thrives just beyond this quiet, shaded nook. The grotto feels like a breath between moments, a place where time slows, yet the world outside continues its endless dance."
+      },
+      {
+        "name": "Stream",
+        "description": "You are at a small stream near the farm",
+        "theme": "farm",
+        "room_type": "farm_stream",
+        "room_ref_id": "farm_stream",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img": "/static/img/theme/farm/farm_stream.webp",
+        "ai_update": true,
+        "ai_description": "The gentle gurgle of the stream greets you as you step into this serene corner of the farm. Sunlight filters through the leafy canopy above, casting dappled patterns on the smooth stones that line the water's edge. The air is crisp, carrying the faint scent of damp earth and the sweet hint of wildflowers blooming somewhere nearby. Small fish dart beneath the surface, their scales catching the light and sending shimmering ripples across the water. To one side, the stream bends gracefully around a cluster of moss-covered rocks, where a fallen tree lies half-submerged, its weathered branches stretching like nature's own sculpture. The sound of birdsong drifts through the air, a melodic counterpoint to the stream's soothing voice. It is a place of quiet beauty, where the rhythm of nature seems to slow time itself, offering a moment of peace amidst the world's turmoil."
+      },
+      {
+        "name": "Well",
+        "description": "You are at a large well",
+        "theme": "farm",
+        "room_type": "farm_well",
+        "room_ref_id": "farm_well",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img": "/static/img/theme/farm/farm_well.webp",
+        "ai_update": true,
+        "ai_description": "The well stands at the heart of the farm, its weathered stones worn smooth by years of use. Water glimmers in the depths, catching the light in ripples that dance like whispers of the past. The wooden bucket, its rope frayed and creaking softly in the breeze, hangs poised as if waiting for the next soul to draw from its cool, clear depths. Around it, the earth is packed hard and bare, a testament to the countless footsteps that have gathered here over the seasons. The air carries the scent of damp stone and the faint tang of hay, while the distant lowing of cattle and the rustle of wind through the fields weave a symphony of rural life. Yet, beneath the tranquility, there\u2019s a faint undercurrent of stillness, as though the well holds secrets it guards closely, its waters reflecting more than just the sky above."
+      },
+      {
+        "name": "Plains",
+        "description": "You stand on a grassy plain.",
+        "theme": "plains",
+        "room_type": "plains1",
+        "room_ref_id": "plains1",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img": "/static/img/theme/plain/plains1.webp",
+        "ai_update": true,
+        "ai_description": "The air is crisp and clean as you step onto the grassy plain, the earthy scent of the ground rising faintly with each breath. Before you stretches an endless sea of emerald blades, swaying gently in the breeze like a chorus of whispering voices. The sky above is a vast, unbroken canvas of blue, with only a few wispy clouds drifting lazily across the horizon. To your left, a cluster of wildflowers adds a splash of color to the otherwise uniform green, their delicate petals swaying in rhythm with the grass. The distant call of a bird echoes through the stillness, a solitary sound that seems to carry on the wind for moments longer than it should. The ground beneath your feet is soft and cool, the faint hum of insects providing a subtle underscore to the symphony of nature. \n\nAs you look around, the plain seems to stretch on forever, a seemingly endless expanse that invites exploration. The air carries the faint tang of damp earth, suggesting recent rains, and the grass is tall enough to brush against your legs as you move. The silence here feels alive, as though the land itself is watching, waiting. Somewhere in the distance, the faint outline of what might be a tree or a rock formation breaks the horizon, a mystery waiting to be uncovered. The plain feels timeless, a place where the world holds its breath, and the weight of countless unseen stories lingers in the air."
+      },
+      {
+        "name": "Plains2",
+        "description": "You stand on a open grassy plain.",
+        "theme": "plains",
+        "room_type": "plains2",
+        "room_ref_id": "plains2",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img": "/static/img/theme/plain/plains2.webp",
+        "ai_update": true,
+        "ai_description": "As you emerge into the open grassy plain, the vast expanse stretches before you like an endless canvas of emerald and gold, where the sun's touch has kissed the tips of the blades. The air carries the gentle rustle of grass swaying in the breeze, a soft melody that whispers secrets of the land. The sky above is a brilliant blue, with clouds drifting lazily, casting dappled shadows that dance across the ground. Beneath your feet, the earth is cool and firm, the grass soft yet resilient, inviting each step with quiet resilience.\n\nTo the north, the horizon hints at a denser shadow, where the silhouette of a forest beckons, its edge a promise of mystery and adventure. To the west, the sun dips lower, painting the sky in hues of amber and rose, suggesting a peaceful end to the day. The east remains bathed in the warm glow of daylight, while the south stretches endlessly, a corridor to the unknown. The plain, untouched and serene, holds a quiet beauty, yet beneath its tranquility lies an undercurrent of anticipation, a sense that this is not just a place of rest, but a threshold to greater journeys."
+      },
+      {
+        "name": "Base of Mountains",
+        "description": "You stand on a open grassy plain, with mountains in the distance.",
+        "theme": "plains",
+        "room_type": "plains_mtn1",
+        "room_ref_id": "plains_mtn1",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img": "/static/img/theme/plain/plains_mtn1.webp",
+        "ai_update": true,
+        "ai_description": "The wind whispers through the tall grasses, each blade swaying in unison as if performing a silent dance beneath the vast, open sky. The earth beneath your feet is soft and cool, the scent of fresh soil and wild herbs carried on the breeze. Before you stretches an endless expanse of green, dotted with wildflowers that shimmer like flecks of gold and purple in the sunlight. The horizon curves gently, meeting the distant silhouette of towering mountains, their peaks crowned with a faint haze that blurs the line between stone and sky. The air is alive with the songs of unseen birds, their melodies intertwining with the rustle of the grass, creating a symphony of solitude. There is a peace here, yet it is not without its edge\u2014a sense of being small in the face of such vastness, and the unspoken promise of adventures waiting beyond the horizon."
+      },
+      {
+        "name": "Base of Mountains",
+        "description": "You stand on a open grassy plain, with mountains in the distance.",
+        "theme": "plains",
+        "room_type": "plains_mtn2",
+        "room_ref_id": "plains_mtn2",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img": "/static/img/theme/plain/plains_mtn2.webp",
+        "ai_update": true,
+        "ai_description": "The open grassy plain stretches before you, an endless expanse of emerald-green grasses that sway gently in the breeze like a chorus of whispering dancers. The earth beneath your feet is firm and cool, the scent of fresh soil and the faint sweetness of wildflowers carried on the air. To the north, the horizon is framed by the distant silhouette of rugged mountains, their peaks crowned with a dusting of snow that catches the sunlight like shards of splintered starlight. The sky above is a brilliant blue, dotted with scattered clouds that drift lazily, their shadows skimming the ground like fleeting thoughts. The air is crisp and clean, filled with the distant calls of unseen birds and the soft rustle of the wind as it weaves through the grasses. The world feels vast and untouched, a place where time itself seems to stretch endlessly, inviting you to explore the unknown."
+      },
+      {
+        "name": "Mountains",
+        "description": "You are high up on a mountain, the view is breathtaking.",
+        "theme": "mountains",
+        "room_type": "mountain1",
+        "room_ref_id": "mountain1",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img": "/static/img/theme/mountain/mountain1.webp",
+        "ai_update": true,
+        "ai_description": "As you ascend to this lofty perch, the crisp mountain air greets you with a biting chill, each breath a reminder of the altitude. The terrain around you is rugged, with jagged cliffs that drop away precipitously, their faces cloaked in patches of snow that glisten like scattered diamonds in the sunlight. The landscape stretches out before you, a vast expanse of peaks and valleys that seem to stretch on endlessly, a testament to the raw power of nature. The silence is almost palpable, broken only by the occasional wind that whisks past, carrying with it the faint scent of pine from the distant forests far below.\n\nFrom this vantage point, the world unfolds in a breathtaking panorama. To the north, the horizon is crowned with the jagged silhouette of a distant mountain range, their peaks kissed by the first hues of sunset. To the east, the terrain slopes downward, revealing a trail that winds its way through the rocks, leading to a dense forest that carpets the lower reaches of the mountain. To the west, the landscape plunges into a deep gorge, the sound of a distant waterfall echoing faintly through the stillness. And to the south, the path you came from disappears into the winding trails that crisscross the mountain's face, a reminder of the journey that brought you here. The view is not just a sight to behold; it is an experience, a moment where the sheer scale of the world leaves you in awe, and the solitude of this high place feels almost sacred."
+      },
+      {
+        "name": "Mountains",
+        "description": "You are high up on a mountain, the view is breathtaking.",
+        "theme": "mountains",
+        "room_type": "mountain2",
+        "room_ref_id": "mountain2",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img": "/static/img/theme/mountain/mountain2.webp",
+        "ai_update": true,
+        "ai_description": "As you step into this lofty perch, the crisp mountain air bites at your skin, carrying with it the faintest whisper of distant storms. The ground beneath your feet is rugged and uneven, ancient stone worn smooth in places by the relentless caress of wind and weather. Before you, the world stretches out in a breathtaking panorama\u2014a patchwork of jagged peaks, valleys cloaked in mist, and far below, the faint glint of a distant river winding its way through the landscape like a serpent of liquid silver. The sky above is a vast expanse of deep blue, with clouds scattered across it like tufts of cotton torn from the heavens themselves.\n\nTo your left, the mountain face drops sharply away, a precipice that would send the unwary tumbling into the abyss. To your right, a narrow ledge winds its way along the cliffside, disappearing around a bend that promises secrets and dangers in equal measure. Ahead of you, the path continues upward, vanishing into the thinning air and the embrace of the clouds. The air is thin here, and every breath feels like a victory, but the view is worth the struggle. This is a place where the world feels both vast and intimate, where the weight of history lingers in the air, and the faint echo of forgotten times seems to reverberate through the stone beneath your feet."
+      },
+      {
+        "name": "Mountains",
+        "description": "You are high up on a mountain, ta massive blizzard is raging.",
+        "theme": "mountains",
+        "room_type": "mountain_blizz",
+        "room_ref_id": "mountain_blizz",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img": "/static/img/theme/mountain/mountain_blizz.webp",
+        "ai_update": true,
+        "ai_description": "The air is a dagger\u2019s edge, sharp with cold, slicing through even the thickest of cloaks as the storm\u2019s fury wraps around you like a living shroud. Above, the sky is a swirling chaos of gray and white, the heavens themselves seeming to unravel as the blizzard rages on. Snow whips through the air in stinging sheets, each flake a tiny, icy blade that cuts at your skin and obscures all but the nearest of landmarks. The world narrows to the few feet in front of you, the rest lost in a swirling void of white. The wind howls, a deafening roar that drowns out all other sound, its voice a primal, unrelenting scream that shakes the very ground beneath your feet.\n\nBeneath you, the mountain is slick with ice and treacherous, the uneven ground hidden beneath knee-deep drifts that shift and writhe like living things. Every step is a gamble, the risk of a misstep sending you tumbling down the steep, rocky slope. The air is thin here, high above the world, and each breath burns in your lungs as the cold seeps into your bones. Despite the danger, there\u2019s a strange beauty to this tempestuous place\u2014a raw, untamed power that humbles even the hardiest of souls. The storm is a reminder that some forces are beyond mortal control, and that even the bravest adventurer is but a small, fragile thing in the face of nature\u2019s wrath."
+      },
+      {
+        "name": "Desert Mountain",
+        "description": "You are at the base of a desert, with mountains in the distance.",
+        "theme": "desert",
+        "room_type": "desert_mtn1",
+        "room_ref_id": "desert_mtn1",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img": "/static/img/theme/desert/desert_mtn1.webp",
+        "ai_update": true,
+        "ai_description": "As you emerge into the vast expanse, the desert stretches before you like an endless sea of gold, each grain of sand shimmering under the relentless sun. The horizon meets the sky at a distant line where the jagged silhouettes of ancient mountains rise, their peaks crowned with a faint haze that blurs the line between earth and heaven. The air is thick with the dry, crisp scent of the desert, and the silence is almost palpable, broken only by the soft whisper of the wind as it skims the dunes. Beneath your feet, the sand shifts, warm and yielding, a reminder of the transient nature of this land.\n\nTo the north lies the formidable mountain range, its rugged facade a testament to time's relentless sculpting. The rocks, a deep amber hue, suggest a history of fire and stone, ancient and untouched. To the south, the desert stretches endlessly, promising adventures and mysteries hidden beneath its golden waves. The east and west offer paths less traveled, each with its own secrets waiting to be unearthed. Here, at the threshold of this desert, the world feels alive, each direction a whisper of tales yet untold."
+      },
+      {
+        "name": "Desert Mountain",
+        "description": "You are at the base of a desert, with mountains in the distance.",
+        "theme": "desert",
+        "room_type": "desert_mtn2",
+        "room_ref_id": "desert_mtn2",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img": "/static/img/theme/desert/desert_mtn2.webp",
+        "ai_update": true,
+        "ai_description": "The desert stretches before you like an endless sea of gold, waves of sand shimmering under the harsh sun. The air is thick with heat, each breath a dry, burning thing that scrapes the back of your throat. To the north, the jagged silhouette of distant mountains rises, their peaks sharp against the sky, a promise of cooler winds and shadowed paths. The sand beneath your feet shifts, unstable and unforgiving, as if the desert itself resists your presence. The world feels vast here, empty, yet charged with a quiet, unyielding power. The horizon stretches endlessly, a line where the earth meets the sky, and you cannot help but feel small, a fleeting moment in the timeless expanse of this place."
+      },
+      {
+        "name": "Desert",
+        "description": "You are in the open desert.",
+        "theme": "desert",
+        "room_type": "desert1",
+        "room_ref_id": "desert1",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img": "/static/img/theme/desert/desert1.webp",
+        "ai_update": true,
+        "ai_description": "The desert sun blazes overhead, its relentless heat pressing down upon you like an unseen hand. Endless dunes of golden sand stretch out before you, each ridge sharp and defined, as though carved by the whims of the wind. The air is thick with the scent of arid earth, and the faint tang of something distant\u2014perhaps ozone, or the promise of far-off storms that never come. To the north, the dunes rise higher, their crests gilded by the harsh sunlight, while to the south, the land flattens slightly, offering a deceptive sense of ease. The horizon stretches endlessly in every direction, a seamless line where the sky meets the sea of sand. The world feels vast and empty here, yet somehow alive, as if the desert itself is watching, waiting to see if you will endure its trials."
+      },
+      {
+        "name": "Desert",
+        "description": "You are in the open desert.",
+        "theme": "desert",
+        "room_type": "desert2",
+        "room_ref_id": "desert2",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img": "/static/img/theme/desert/desert2.webp",
+        "ai_update": true,
+        "ai_description": "The sun beats down relentlessly, its fiery edge searing the sky as though the heavens themselves were a forge. The air is thick with heat, each breath a dry, crackling thing that scrapes the back of your throat. Beneath your feet, the sand shifts, soft and treacherous, like the forgotten ashes of some ancient, colossal fire. The horizon stretches out endlessly, a golden expanse that seems to shimmer and writhe under the sun's glare. Dunes rise and fall in waves, their ridges sharp and clean, as if carved by some divine hand. The only sound is the wind, a low, mournful sigh that carries the faintest whisper of distant memories\u2014or perhaps the echoes of those who never found their way out.\n\nTo the north, the dunes grow taller, their shadows deep and foreboding, like the teeth of some slumbering beast. To the south, the sand flattens, a seemingly endless plain that glows like molten gold in the sunlight. The sky above is a brilliant, burning blue, unbroken by even a single cloud, and yet it feels heavy, as though the weight of the world presses down upon you. The desert is alive, you can feel it\u2014its pulse a slow, steady beat that resonates deep in your bones. It is a place of beauty and cruelty, where the sun is both your greatest enemy and your only companion. You cannot help but wonder what lies hidden beneath the shifting sands, or what waits beyond the next dune."
+      },
+      {
+        "name": "Forest Entrance",
+        "description": "You are at the entrance of a forest.",
+        "theme": "forest",
+        "room_type": "forest1",
+        "room_ref_id": "forest1",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img": "/static/img/theme/forest/forest1.webp",
+        "ai_update": true,
+        "ai_description": "The air clings to the scent of damp earth and pine as you step beneath the ancient boughs, the world narrowing to the soft rustle of leaves and the muted glow of sunlight filtering through the canopy above. The forest floor, a tapestry of ferns and moss, stretches out before you, each step a quiet crunch of fallen needles. The trees here are sentinels, their gnarled trunks twisted with age, their branches tangled in a dance of shadow and light. Somewhere distant, the faint call of a bird echoes, a lonely sound that seems to carry on the breeze like a whisper from the forest itself. The air is cool, carrying the faintest hint of decay and rebirth, a reminder that this place is alive, breathing, and full of secrets waiting to be unearthed."
+      },
+      {
+        "name": "Forest",
+        "description": "You are deeper in the forest",
+        "theme": "forest",
+        "room_type": "forest2",
+        "room_ref_id": "forest2",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img": "/static/img/theme/forest/forest1.webp",
+        "ai_update": true,
+        "ai_description": "As you step deeper into the forest, the world seems to grow quieter, as if the very trees themselves are listening. The canopy above thickens, filtering the sunlight into narrow shafts that carve through the air like ethereal blades, illuminating the mist that clings to the forest floor. The scent of damp earth and moss fills your lungs, and the faint rustle of unseen creatures echoes through the undergrowth. The trees here are older, their gnarled trunks twisted with age, their branches tangled in a way that feels almost deliberate, as though the forest itself is weaving a barrier to keep intruders at bay. The air is heavy with the weight of untold years, and the silence feels alive, like a held breath.\n\nAhead of you, the forest stretches on, darker and more menacing with every step. The ground beneath your feet is uneven, a tangle of roots and fallen leaves that makes every step a careful negotiation. To your left, the trees seem to lean inward, forming a natural alcove where shadows pool like water. To your right, a faint glow flickers in the distance, though it\u2019s impossible to tell if it\u2019s a beacon or a trap. The forest doesn\u2019t give up its secrets easily, and every step forward feels like a test, a challenge to see if you\u2019re worthy to uncover what lies within."
+      },
+      {
+        "name": "Forest Fountain",
+        "description": "You are at a fountain in the forest.",
+        "theme": "forest",
+        "room_type": "forest_fountain",
+        "room_ref_id": "forest_fountain",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img": "/static/img/theme/forest/forest_fountain.webp",
+        "ai_update": true,
+        "ai_description": "As you step into the clearing, the soft murmur of the forest parts to reveal the gentle song of water. Before you lies a fountain, its basin carved from a single piece of moss-covered stone, blending seamlessly into the surrounding wilds. The water cascades from a delicate spout shaped like a leaping stag, its surface catching the dappled light filtering through the canopy above. The pool is crystal clear, reflecting the vibrant greens of the forest floor and the occasional flicker of a sunbeam. Around the fountain, ancient trees stand sentinel, their gnarled roots twisting outward as if drawn to the water\u2019s edge. The air is cool and crisp, carrying the scent of damp earth and the faint hint of wildflowers hidden in the underbrush. The atmosphere is serene, yet there\u2019s an undercurrent of something ancient and forgotten, as though the fountain has stood here for centuries, waiting for the next weary traveler to find solace in its waters."
+      },
+      {
+        "name": "Forest",
+        "description": "You are in the forest, you can go no further.",
+        "theme": "forest",
+        "room_type": "forest3",
+        "room_ref_id": "forest3",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img": "/static/img/theme/forest/forest1.webp",
+        "ai_update": true,
+        "ai_description": "As you step into this part of the forest, the dense canopy overhead filters the sunlight, casting the forest floor in a dim, emerald green hue. The air is thick with the scent of damp earth and moss, and the sounds of the forest surround you\u2014leaves rustling softly in the breeze, the distant call of a bird, and the occasional snap of a twig. The trees here are ancient, their gnarled branches twisted with age, giving the place a sense of timelessness. The atmosphere is heavy with the weight of history, and the silence feels almost palpable, as though the forest itself is watching you.\n\nDespite the beauty of your surroundings, there is an undercurrent of unease. The path you followed here has led you to a place where the trees seem to close in around you, forming a natural barrier that prevents you from moving further. The air feels charged with an almost palpable energy, a faint hum of something unseen. You can't quite put your finger on it, but there's a sense that this is a place of power, a place where the very fabric of the world feels thin. The trees loom over you, their branches like outstretched arms, and you can't help but wonder what secrets they might hold\u2014or what might be waiting just beyond the edge of perception."
+      },
+      {
+        "name": "Forest",
+        "description": "You are very, very, deep in the forest.",
+        "theme": "forest",
+        "room_type": "forest4",
+        "room_ref_id": "forest4",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img": "/static/img/theme/forest/forest1.webp",
+        "ai_update": true,
+        "ai_description": "As you step into the heart of the forest, the air thickens with the scent of damp earth and the faint sweetness of blooming wildflowers. The canopy above is a tapestry of emerald and amber, filtering the sunlight into dappled patterns that dance across the forest floor. Ancient trees, their gnarled trunks twisted with age, stand sentinel around a small clearing. The rustle of leaves and the distant call of an unseen bird create a symphony of sounds that envelop you, yet the forest feels eerily still, as if it holds its breath in anticipation. The undergrowth, dense with ferns and brambles, whispers secrets of the wild, while the soft moss beneath your feet muffles your steps, making you feel both a part of the landscape and an intruder in this sacred place. The atmosphere is tranquil, yet there's an undercurrent of something more, a subtle hum of magic that hints at the forest's ancient, watchful presence."
+      },
+      {
+        "name": "Swamp Entrance",
+        "description": "You are at the entrance of a swamp.",
+        "theme": "swamp",
+        "room_type": "swamp1",
+        "room_ref_id": "swamp1",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img": "/static/img/theme/swamp/swamp1.webp",
+        "ai_update": true,
+        "ai_description": "The air clings to you like a damp shroud as you step into the swamp's embrace. Before you, the ground sags under the weight of murky water, each step promising to suck the boots from your feet. Twisted cypress trees rise like skeletal sentinels, their gnarled branches tangled with moss that sways ominously in the faint breeze. The sky above is a sickly greenish-gray, filtering through the canopy in dim, uneven patches that leave more shadows than light. The smell of decay and damp earth fills your nostrils, rich and heavy, while the sounds of croaking frogs and the occasional splash of unseen creatures break the oppressive stillness. The ground beneath you squelches with each shift of your weight, a reminder that even the land itself seems reluctant to support your presence. This is a place where nature itself seems hostile, where every breath feels like a battle, and every step forward is a gamble with the unseen dangers lurking just beneath the surface."
+      },
+      {
+        "name": "Swamp",
+        "description": "You deeper into the swamp.",
+        "theme": "swamp",
+        "room_type": "swamp2",
+        "room_ref_id": "swamp2",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img": "/static/img/theme/swamp/swamp_1.webp",
+        "ai_update": true,
+        "ai_description": "As you step deeper into the swamp, the air clings to you like a damp shroud, heavy with the scent of decay and blooming algae. The ground beneath your feet is spongy and uneven, water pooling in every depression, reflecting the dim, emerald-green light that filters through the dense canopy above. The sky is almost invisible, obscured by the tangled web of branches and vines that seem to close in around you, making the world feel smaller, more claustrophobic. The sounds of the swamp are a constant hum\u2014buzzing insects, the occasional splash of something moving through the water, and the distant, mournful call of a bird that echoes unnervingly through the mist.\n\nThe deeper you venture, the more oppressive the swamp becomes. The water grows darker, murkier, and the vegetation twists into grotesque, unnatural shapes. Trees rise like skeletal sentinels, their gnarled branches clawing at the air as if to snare the unwary. The air feels alive with unseen movement, the faint ripple of the water betraying the presence of creatures that lurk just beneath the surface. Every step forward feels like a battle, the swamp itself seeming to resist your intrusion. The sense of being watched is palpable, and the deeper you go, the harder it becomes to shake the feeling that you are not alone\u2014or that the swamp itself is not as lifeless as it appears."
+      },
+      {
+        "name": "Swamp",
+        "description": "You are very deep into the swamp, you can go no further.",
+        "theme": "swamp",
+        "room_type": "swamp3",
+        "room_ref_id": "swamp3",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img": "/static/img/theme/swamp/swamp_2.webp",
+        "ai_update": true,
+        "ai_description": "As you wade deeper into the swamp, the air clings to you like a damp shroud, heavy with the stench of decay. The water here is murky, each step uncertain as the spongy ground threatens to suck you down. Towering cypress trees loom above, their gnarled branches tangled with moss that hangs like forgotten tapestries. The sounds of the swamp are deafening\u2014croaking frogs, the occasional splash, and the relentless hum of insects that swarm around you. The sky above is a dismal gray, casting a sickly hue over the landscape, and the still water mirrors the gloom, creating an eerie sense of being watched. \n\nAhead of you, the path fades into a thicket of impenetrable vegetation, signaling the end of your journey. To your left, the remnants of an ancient, crumbling structure jut out of the water, covered in slime and moss, a testament to the swamp's relentless reclaiming of all that dares to stand. The air feels heavy, charged with an almost palpable unease, as if the swamp itself is waiting to see if you'll dare to linger."
+      },
+      {
+        "name": "Castle Exterior",
+        "description": "You are entrance of a large castle, a door to the castle is ajar.",
+        "theme": "castle",
+        "room_type": "castle_exterior",
+        "room_ref_id": "castle_exterior",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img": "/static/img/theme/castle/castle_exterior.webp",
+        "ai_update": true,
+        "ai_description": "The grandeur of the castle unfolds before you, its stone walls standing as silent sentinels under the weight of history. The entrance, a towering arch of weathered granite, beckons with a door that hangs slightly ajar, its iron hinges creaking softly in the breeze like a whispered invitation. The air carries the faint scent of damp earth and aged stone, while the sky above stretches in a vast expanse, casting long shadows that dance across the courtyard. The world seems to hold its breath as you approach, the silence broken only by the distant call of a raven winging its way over the battlements. The door, pushed open just enough to admit a sliver of dim light from within, suggests that whatever lies beyond has been left untouched, waiting for the curious or the brave to uncover its secrets."
+      },
+      {
+        "name": "Graveyard",
+        "description": "You are in a graveyard, the headstones are covered in moss and the ground is wet.",
+        "theme": "graveyard",
+        "room_type": "graveyard1",
+        "room_ref_id": "graveyard1",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img": "/static/img/theme/grave/grave_1.webp",
+        "ai_update": true,
+        "ai_description": "As you step into the graveyard, the air clings to you like a damp shroud, heavy with the scent of moss and the faint tang of decay. The headstones, worn smooth by time, are cloaked in thick, emerald-green moss that glistens in the dim light, each one a silent sentinel guarding the secrets of the past. The ground beneath your feet is spongy and soft, each step releasing a faint squelch as the earth yields to your weight. The world here seems to hold its breath, the only sound the distant, mournful rustle of leaves and the occasional drip of water from unseen eaves. The carvings on the stones are barely legible, their stories worn away by the relentless march of seasons, yet the weight of history lingers, a palpable presence that presses upon your chest. This is a place where time stands still, where the echoes of lives long past whisper through the mist, and the earth itself seems to mourn."
+      },
+      {
+        "name": "Graveyard",
+        "description": "You are in deeper into the graveyard, it's getting darker.",
+        "theme": "graveyard",
+        "room_type": "graveyard2",
+        "room_ref_id": "graveyard2",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img": "/static/img/theme/grave/grave_2.webp",
+        "ai_update": true,
+        "ai_description": "As you step deeper into the graveyard, the shadows stretch like grasping fingers, shrouding the world in an oppressive gloom. The air thickens with the scent of damp earth and decay, each breath heavy with the weight of countless unspoken stories. Twisted trees loom overhead, their gnarled branches clawing at the dim sky like skeletal hands, while crooked tombstones jut from the ground, their weathered inscriptions barely legible under layers of moss and grime. The silence here is palpable, a living, breathing entity that presses against your skin, punctuated only by the faint rustle of leaves and the distant, mournful whisper of wind through the stones. Every step feels heavier, as though the very ground resists your presence, warning you to turn back while there is still time.\n\nTo your north lies a cluster of crumbling mausoleums, their once-grand facades now worn and cracked, their iron gates hanging crookedly from hinges that seem to scream in the silence. The path south winds between rows of simpler graves, each marked by a humble stone or a cross that leans precariously, as though the earth itself is trying to reclaim them. Ahead of you, the graveyard stretches into the darkness, where the shadows grow darker and the air colder, hinting at secrets buried deeper than the dead."
+      },
+      {
+        "name": "Crypt Entrance",
+        "description": "You are in the entrance of a crypt, you feel a sense of foreboding.",
+        "theme": "crypt",
+        "room_type": "crypt1",
+        "room_ref_id": "crypt1",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img": "/static/img/theme/grave/crypt_entrance.webp",
+        "ai_update": true,
+        "ai_description": "As you step through the heavy, weathered doors, the air clings to you like a damp shroud, thick with the scent of aged dust and the faint tang of decay. The entrance to the crypt is a stark, solemn space, its stone walls bearing the weight of countless years. The flickering light of a lone torch casts eerie shadows on the walls, where ancient carvings depict scenes of mourning and farewell. Beneath your feet, the floor is smooth and cool, worn by the tread of countless footsteps over the centuries. Ahead of you, the darkness seems to press in, heavy with the silence of the dead. The air is still, and the only sound is the faint creak of the doors behind you, a reminder that you are not alone in this place.\n\nTo your north lies a corridor shrouded in shadow, the faint outline of stone sarcophagi visible in the dim light. The walls here are adorned with faded frescoes, their colors dulled by time, but their somber beauty still lingers. To the south, the corridor narrows, the air growing colder as it leads deeper into the crypt. The walls are lined with alcoves, each holding the remains of those long since passed, their presence a silent testament to the weight of history that fills this place. Every step you take echoes through the stillness, a reminder that you are but a temporary visitor to this solemn, sacred space."
+      },
+      {
+        "name": "Castle Entrance Hall",
+        "description": "You are in the main entrance hall of the castle, it appears to be in ruins.",
+        "theme": "castle",
+        "room_type": "castle_entrance",
+        "room_ref_id": "castle_entrance",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img": "/static/img/theme/castle/castle_entrance.webp",
+        "ai_update": true,
+        "ai_description": "As you step into the grand entrance hall of the castle, the weight of history settles around you like a shroud. Once a symbol of power and pride, the hall now stands as a testament to time's relentless march. The high, vaulted ceiling, though cracked and worn, still hints at the grandeur that once was. Shafts of sunlight pierce through the shattered stained glass windows, casting kaleidoscopes of color across the dusty floor. The air is thick with the scent of decay and forgotten memories, each breath stirring the motes of dust that dance in the faint light.\n\nTo your north lies a corridor, its theme of decay and neglect evident in the peeling tapestries and crumbling stone. The walls whisper stories of a bygone era, their voices carried on the faint echoes that linger in the air. Ahead of you, the hall stretches deeper into the castle's heart, promising secrets and dangers alike. The silence is oppressive, broken only by the creak of twisted metal and the faint rustle of unknown creatures in the shadows. This is but the beginning of your journey, where the past and present collide, and the path ahead is fraught with mystery and peril."
+      },
+      {
+        "name": "Castle Kitchen",
+        "description": "You are in the kitchen of the castle, it also appears to be in ruins.",
+        "theme": "castle",
+        "room_type": "castle_kitchen",
+        "room_ref_id": "castle_kitchen",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img": "/static/img/theme/castle/castle_kitchen.webp",
+        "ai_update": true,
+        "ai_description": "As you step into the kitchen, the weight of time bears down upon you. What was once the bustling heart of the castle, where the scent of roasting meats and freshly baked bread once filled the air, now lies in shambles. The large hearth stands as a hollow monolith, its bricks cracked and soot-streaked, the ashes of the last fire long cold. Pots and pans, once clanging with purpose, now hang dented and rusted from their hooks, swaying faintly in the draft that whisks through the broken windows. The air is thick with dust and the faint, lingering tang of smoke, though whether from the last meal cooked here or some more recent, ominous origin, you cannot tell.\n\nTo your north lies a grand hall, its high ceiling vaulted and crumbling, the faint echo of laughter and feasts lingering in the air. To your west, a narrow corridor leads deeper into the castle's bowels, the walls lined with cobweb-shrouded tapestries that whisper of forgotten glory. And to your east, a staircase spirals upward, vanishing into the shadows above, where the private chambers of the castle's former lords now wait in silence. The kitchen, once a place of warmth and life, is now a testament to time's relentless march, its beauty faded but not forgotten."
+      },
+      {
+        "name": "Castle Pantry",
+        "description": "You are in the pantry of the castle, it also appears to be in ruins.",
+        "theme": "castle",
+        "room_type": "castle_pantry",
+        "room_ref_id": "castle_pantry",
+        "npcs": [],
+        "treasures": [],
+        "traps": [],
+        "is_dark": false,
+        "is_locked": false,
+        "room_img": "/static/img/theme/castle/castle_pantry.webp",
+        "ai_update": true,
+        "ai_description": "The air clings to the scent of decay and forgotten spices, heavy with the weight of years. Before you lies what was once the bustling heart of the castle\u2019s provisions\u2014a pantry now surrendered to ruin. Shelves, once sturdy and filled with the bounty of the castle\u2019s stores, now hang crookedly from the walls, their wooden slats worn and splintered. The remnants of barrels lie on their sides, their staves loosened, spilling forth dust and the faint echoes of long-rotted grain. The floor beneath your feet is littered with the detritus of abandonment: shattered pottery, rusted hinges, and the occasional glint of a forgotten utensil half-buried in the grime.\n\nTo your north, a sliver of light peeks through a crack in the wall, illuminating motes of dust that dance lazily in the faint beam. The walls themselves are streaked with the greenish-black tendrils of moss and mold, thriving in the dampness that seeps through the stone. The silence is oppressive, a palpable thing that fills the space where once the murmur of servants and the clatter of work would have echoed. Even the air feels heavy, as though the very breath of the castle has been still for far too long."
+      }
+    ],
+    "connections": {
+      "world_start": {
+        "north": "farm_outside"
+      },
+      "farm_outside": {
+        "west": "farm_grotto",
+        "east": "farm_stream"
+      },
+      "farm_stream": {
+        "north": "farm_well"
+      },
+      "farm_well": {
+        "east": "plains1"
+      },
+      "plains1": {
+        "east": "plains2",
+        "north": "plains_mtn1"
+      },
+      "plains2": {
+        "north": "plains_mtn2"
+      },
+      "plains_mtn1": {
+        "north": "mountain1"
+      },
+      "mountain1": {
+        "north": "mountain_blizz",
+        "east": "mountain2"
+      },
+      "mountain_blizz": {
+        "north": "desert_mtn1"
+      },
+      "desert_mtn1": {
+        "north": "desert1",
+        "west": "desert_mtn2"
+      },
+      "desert1": {
+        "east": "desert2"
+      },
+      "farm_grotto": {
+        "west": "forest1"
+      },
+      "forest1": {
+        "west": "forest2"
+      },
+      "forest2": {
+        "north": "forest_fountain"
+      },
+      "forest_fountain": {
+        "north": "forest3",
+        "west": "forest4"
+      },
+      "forest4": {
+        "west": "swamp1"
+      },
+      "swamp1": {
+        "west": "swamp2"
+      },
+      "swamp2": {
+        "west": "swamp3"
+      },
+      "forest3": {
+        "north": "castle_exterior"
+      },
+      "castle_exterior": {
+        "west": "graveyard1",
+        "north": "castle_entrance"
+      },
+      "graveyard1": {
+        "west": "graveyard2"
+      },
+      "graveyard2": {
+        "south": "crypt1"
+      },
+      "castle_entrance": {
+        "east": "castle_kitchen"
+      },
+      "castle_kitchen": {
+        "north": "castle_pantry"
+      }
+    }
+  }
+}
