@@ -399,7 +399,16 @@ async def show_map(request: Request):
                 font-family: Arial, sans-serif;
                 margin: 0;
                 padding: 20px;
-                background-color: #f0f0f0;
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 100%;
+                z-index: 0;
+                background: url("/static/img/interface/gothic_castle.webp");
+                background-position: 50%;
+                background-repeat: no-repeat;
+                background-size: cover;
+                overflow: hidden;
             }}
             .container {{
                 max-width: 95%;
@@ -408,6 +417,7 @@ async def show_map(request: Request):
                 padding: 20px;
                 border-radius: 5px;
                 box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                position: absolute;
             }}
             h1 {{
                 color: #333;
