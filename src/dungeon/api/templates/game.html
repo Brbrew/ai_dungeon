@@ -3,6 +3,9 @@
 {% block title %}Dungeon Game - Command Interface{% endblock %}
 
 {% block extra_head %}
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <style>
     .modal {
         display: none;
@@ -92,6 +95,183 @@
         background-size: cover;
         overflow: hidden;
     }
+
+    .output-area_bold {
+        font-family: 'Cinzel Decorative', serif;
+        font-weight: bold;
+        color: #ffffff;
+    }
+
+
+
+
+
+    /* row start column start row end column end */
+    /* Game area grid layout */
+    .game_area_grid {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        grid-template-rows: auto auto auto;
+        grid-column-gap: 0px;
+        grid-row-gap: 0px;
+        padding: 0px;
+        margin: 0px;
+        flex-shrink: 0;
+        justify-content: center;
+    }
+
+    .game_area_left { 
+        grid-area: 1 / 1 / 3 / 2; 
+    }
+
+    .game_area_room {
+        grid-area: 1 / 2 / 2 / 3;
+        padding: 0px;
+        margin: 0px;
+        text-align: center;
+        flex-shrink: 0;
+        display: flex;
+        justify-content: center;
+        vertical-align: top;
+        height: 100%;
+    }
+
+    .game_area_room img {
+        width: 85%;
+        height: 85%;
+        display: block;
+        margin-left: 0px;
+    }
+
+    .game_area_npc {
+        grid-area: 1 / 2 / 2 / 3;
+        padding: 0px;
+        margin: 0px;
+        text-align: center;
+        flex-shrink: 0;
+        display: flex;
+        justify-content: center;
+        vertical-align: top;
+    }
+
+    .game_area_message {
+        grid-area: 1 / 2 / 2 / 3;
+        padding: 0px;
+        margin: 0px;
+        text-align: center;
+        flex-shrink: 0;
+        display: flex;
+        justify-content: center;
+        vertical-align: top;
+    }
+
+    .game_area_icons {
+        grid-area: 1 / 2 / 2 / 3;
+        padding: 0px;
+        margin: 5px;
+        text-align: center;
+        flex-shrink: 0;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        vertical-align: top;
+        margin-left: 0px;
+        position: relative; /* For absolute positioning of children */
+        gap: 10px;
+    }
+
+    .game_area_icons img {
+        width: auto;
+        height: auto;
+        height: 10%;
+        cursor: pointer;
+        margin: 0px;
+
+    }
+
+    .game_area_icons img:hover {
+        transform: scale(1.1);
+    }
+
+    .game_area_overlay {
+        grid-area: 1 / 2 / 2 / 3;
+        padding: 0px;
+        margin: 0px;
+        text-align: center;
+        flex-shrink: 0;
+        display: flex;
+        justify-content: center;
+        vertical-align: top;
+    }
+
+    .game_area_overlay img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        margin: auto;
+        background-color: transparent;
+        filter: drop-shadow(0px 10px 5px #000000);
+    }
+
+    .game_area_console {
+        grid-area: 2 / 2 / 3 / 3;
+        display: flex;
+        flex-direction: column;
+        padding-left: 5%;
+        padding-right: 5%;
+        padding-top: 0px;
+        padding-bottom: 5%;
+        height: 800px;
+        margin: auto;
+        width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
+        flex-shrink: 0;
+        flex-grow: 1;
+    }
+
+    .output-area {
+        flex-grow: 1;
+        overflow-y: auto;
+        margin-bottom: 10px;
+    }
+
+    .command-area {
+        display: flex;
+        margin-top: auto;
+        width: 100%;
+    }
+
+    .game_area_footer {
+        grid-area: 3 / 1 / 4 / 4;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .game_area_right {
+        grid-area: 1 / 3 / 3 / 4;
+    }
+
+
+    /* Game container */
+    .game-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+
+    .console-highlight {
+        color: #fff;
+    }
+
+   
+
 </style>
 {% endblock %}
 
@@ -99,19 +279,31 @@
 <div class="game-absolute-bg">
     <div class="game_area_grid">
         <div class="game_area_left">Left</div>
-        <div class="game_area_room">
-            <img src="{{ room_img }}" id="roomImage">
-        </div>
+        <div class="game_area_room"><img src="{{ room_img }}" id="roomImage"></div> <!---  -->
+
         <div class="game_area_npc">NPC</div>
         <div class="game_area_message">Message</div>
-        <div class="game_area_overlay"><img src="/static/img/interface/room_overlay.webp"></div>
+       
+        <div class="game_area_overlay"><img src="/static/img/interface/room_overlay.webp"></div> <!--- -->
+
+        <div class="game_area_icons">
+            <img src="/static/img/interface/settings_icon.webp" alt="Settings">
+            <img src="/static/img/interface/inventory_icon.webp" alt="Inventory">
+            <img src="/static/img/interface/map_icon.webp" alt="Map" id="mapIcon">
+            <img src="/static/img/interface/potion_icon.webp" alt="Potion">
+            <img src="/static/img/interface/swords_icon.webp" alt="Combat">
+            <img src="/static/img/interface/save_icon.webp" alt="Save">
+        </div>
+
+    
+
+        
         <div class="game_area_console">
-                <div class="output-area" id="outputArea">Welcome to the Dungeon!<br>Type 'help' for a list of available commands.<br><br></div>
-                    <div class="command-area">
-                        <input type="text" id="commandInput" class="command-input" placeholder="Enter your command...">
-                        <button id="submitCommand" class="command-button">Send</button>
-                        <button id="showMap" class="command-button">Map</button>
-                    </div>
+            <div class="output-area" id="outputArea"><p class="output-area_bold">Welcome to the Dungeon!<br>Type 'help' for a list of available commands.<br><br></p></div>
+                <div class="command-area">
+                    <input type="text" id="commandInput" class="command-input" placeholder="Enter your command...">
+                    <button id="submitCommand" class="command-button">Send</button>
+                </div>
         </div>
         <div class="game_area_footer">Footer</div>
         <div class="game_area_right">Right</div>
@@ -174,6 +366,14 @@
                 }),
                 success: function(response) {
                     console.log("Parser response:", response);
+                    
+                    // Check if this is a clear command
+                    if (response.message === "CLEAR_OUTPUT") {
+                        // Clear the output area
+                        $('#outputArea').empty();
+                        return;
+                    }
+                    
                     appendOutput(response.message, "system");
                     
                     // Update room image if available in response
@@ -234,6 +434,12 @@
 
         // Map Modal functionality
         $('#showMap').on('click', function() {
+            $('#mapModal').show();
+            updateMap();
+        });
+
+        // Add click handler for map icon
+        $('#mapIcon').on('click', function() {
             $('#mapModal').show();
             updateMap();
         });

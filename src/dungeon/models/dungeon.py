@@ -9,6 +9,7 @@ from pathlib import Path
 from nltk.tokenize import word_tokenize
 from uuid import UUID
 import random
+import re
 
 from .character import Character
 from .map import Map, Direction
@@ -18,10 +19,14 @@ from .weapon import Weapon, WeaponType
 from .armor import Armor, ArmorType
 from .npc import NPC
 from .item import Item
+from .key import Key
+from .potion import Potion
+from .scroll import Scroll
 from .action import Action
 from .room_type import RoomType
 from .ai_generator import AIGenerator
 from .scenario import Scenario
+from .action_type import ActionType
 
 
 class Dungeon:
@@ -53,18 +58,24 @@ class Dungeon:
         self.ai_generator = AIGenerator()  # Initialize the AI generator
         self.score = 0  # Initialize player score to 0
         self.scenario = None  # Initialize scenario to None
+
+        # Player data
+        self.player_character: Optional[Character] = None  # Will be initialized when username is provided
+        self.npcs: Dict[str, NPC] = {}  # Dictionary to store NPCs
+        self.enemies: Dict[str, NPC] = {}  # Dictionary to store enemies
+        self.items: Dict[str, Item] = {}  # Dictionary to store items
         
         # Collections to store dungeon entities
-        self.characters: Dict[str, Character] = {}
-        self.npcs: Dict[str, NPC] = {}
-        self.enemies: Dict[str, NPC] = {}
+        # NPC
+        # ENEMY
+        # ITEM
+
         self.map: Optional[Map] = None  # Single map for the dungeon
         self.themes: Dict[str, Theme] = {}
-        self.items: Dict[str, Item] = {}
         
         # Current game state
         self.current_room_id: Optional[str] = None
-        self.active_character_id: Optional[str] = None
+        self.current_room: Optional[Room] = None  # Direct reference to the current room object
         
         # Load sample dungeon
         if load_sample:
@@ -144,16 +155,84 @@ class Dungeon:
                 else:
                     room_description = room_data["description"]
 
+                # Get room item location
+                if "room_item_location" in room_data:
+                    room_item_location = room_data["room_item_location"]
+                else:
+                    room_item_location = ""
+
+                # Create the room object first
                 room = Room(
                     name=room_data["name"],
                     description=room_description,
                     theme=theme,
-                    room_ref_id=room_ref_id.lower(),
+                    room_ref_id=room_ref_id,
                     room_type=RoomType(name=room_data["room_type"].lower(), description=f"A {room_data['room_type'].lower()} room") if "room_type" in room_data else None,
                     is_dark=room_data.get("is_dark", False),
                     is_locked=room_data.get("is_locked", False),
-                    room_img=room_data.get("room_img", "")
+                    room_img=room_data.get("room_img", ""),
+                    room_item_location=room_item_location
                 )
+
+                # Now add items to the room
+                if "room_items" in room_data:
+                    room_items = room_data["room_items"]
+                    for item_data in room_items:
+                        item_type = item_data.get("item_type", "")
+                        item_name = item_data.get("name", "")
+                        item_description = item_data.get("description", "")
+                        item_detailed_description = item_data.get("detailed_description", "")
+                        item_alias = item_data.get("alias", [])
+                        item_room_description = item_data.get("item_room_description", "")
+                        
+                        # Create the appropriate item subclass based on type
+                        if item_type == "key":
+                            unlock_room_ref_id = item_data.get("unlock_room_ref_id", "")
+                            item = Key(
+                                name=item_name,
+                                item_type=item_type,
+                                description=item_description,
+                                unlock_room_ref_id=unlock_room_ref_id,
+                                detailed_description=item_detailed_description,
+                                alias=item_alias
+                            )
+                        elif item_type == "potion": 
+                            potion_text = item_data.get("potion_text", "")
+                            smell_description = item_data.get("smell_description", "It has a strange smell.")
+                            item = Potion(
+                                name=item_name,
+                                item_type=item_type,
+                                description=item_description,
+                                detailed_description=item_detailed_description,
+                                effects=potion_text,
+                                smell_description=smell_description,
+                                alias=item_alias
+                            )
+                        elif item_type == "scroll":
+                            scroll_text = item_data.get("scroll_text", "")
+                            item = Scroll(
+                                name=item_name,
+                                item_type=item_type,
+                                description=item_description,
+                                detailed_description=item_detailed_description,
+                                scroll_text=scroll_text,
+                                alias=item_alias
+                            )
+                        else:
+                            # Default to generic Item if type is not recognized
+                            item = Item(
+                                name=item_name,
+                                item_type="something",
+                                description=item_description,
+                                detailed_description=item_detailed_description,
+                                alias=item_alias
+                            )
+                        
+                        # Add the item to the room
+                        room.add_item(item, item_room_description)
+                else:
+                    room_items = []
+
                 print(f"DEBUG: Room created with room_id: {room.id} and theme: {theme.name}")
                 room_objects[room_ref_id.lower()] = room
                 self.map.add_room(room)
@@ -176,6 +255,8 @@ class Dungeon:
                 self.current_room_id = str(first_room.id)
                 print(f"DEBUG: Set the current room to: {first_room.name} (ID: {first_room.id})")
                 
+                self.set_current_room(self.current_room_id)
+
                 # Mark the first room as visited
                 try:
                     self.map.mark_room_visited(first_room.id)
@@ -238,7 +319,9 @@ class Dungeon:
                     direction_descriptions = []
                     for direction, connected_room in connected_rooms.items():
                         room_type_name = connected_room.room_type.name.lower() if connected_room.room_type else "room"
-                        direction_descriptions.append(f"There is a {room_type_name} to the {direction.value[0]}")
+                        room_theme = connected_room.theme.name.lower() if connected_room.theme else "room"
+
+                        direction_descriptions.append(f"There is a <span class='console-highlight'>{room_theme}</span> to the <span class='console-highlight'>{direction.value[0]}</span>")
                     room_direction_info = ". ".join(direction_descriptions) + "."
                 else:
                     room_direction_info = "There are no exits from this room."
@@ -251,18 +334,6 @@ class Dungeon:
         except Exception as e:
             print(f"DEBUG: Error loading dungeon: {e}")
     
-    def add_character(self, character: Character) -> str:
-        """Add a character to the dungeon.
-        
-        Args:
-            character: The character to add
-            
-        Returns:
-            The ID of the added character
-        """
-        character_id = str(character.id)
-        self.characters[character_id] = character
-        return character_id
     
     def add_npc(self, npc: NPC) -> str:
         """Add an NPC to the dungeon.
@@ -324,21 +395,6 @@ class Dungeon:
         self.items[item_id] = item
         return item_id
     
-    def get_character(self, character_id: str) -> Character:
-        """Get a character by ID.
-        
-        Args:
-            character_id: The ID of the character to get
-            
-        Returns:
-            The character with the given ID
-            
-        Raises:
-            KeyError: If no character with the given ID exists
-        """
-        if character_id not in self.characters:
-            raise KeyError(f"No character with ID {character_id} exists")
-        return self.characters[character_id]
     
     def get_npc(self, npc_id: str) -> NPC:
         """Get an NPC by ID.
@@ -429,30 +485,36 @@ class Dungeon:
         if self.map is None:
             raise ValueError("No map has been set for this dungeon")
         
-        # Check if the room exists in the map
-        room_exists = False
-        for room in self.map.get_all_rooms():
-            if str(room.id) == room_id:
-                room_exists = True
-                break
-        
-        if not room_exists:
-            raise ValueError(f"Room with ID {room_id} does not exist in the map")
-        
-        self.current_room_id = room_id
-    
-    def set_active_character(self, character_id: str) -> None:
-        """Set the active character.
-        
-        Args:
-            character_id: The ID of the character to set as active
+        try:
+            print(f"DEBUG: Attempting to get room with ID: {room_id}")
+            # Check if the room exists in the map
+            room_exists = False
+            for room in self.map.get_all_rooms():
+                if str(room.id) == room_id:
+                    room_exists = True
+                    break
             
-        Raises:
-            KeyError: If no character with the given ID exists
-        """
-        if character_id not in self.characters:
-            raise KeyError(f"No character with ID {character_id} exists")
-        self.active_character_id = character_id
+            if not room_exists:
+                print(f"DEBUG: Room with ID {room_id} not found in map")
+                raise ValueError(f"Room with ID {room_id} does not exist in the map")
+            
+            current_room = self.map.get_room_by_id(room_id)
+            self.current_room_id = room_id
+            self.current_room = current_room
+            
+            # Set the room image from the current room
+            if current_room.room_img:
+                room_img = current_room.room_img
+            else:
+                # Initialize with default image
+                current_room.room_img = "/static/img/interface/default_room.webp"
+                
+        except (ValueError, KeyError) as e:
+            print(f"DEBUG: Error getting room by ID: {e}")
+            self.current_room_id = None
+            self.current_room = None
+            raise ValueError(f"Room with ID {room_id} does not exist in the map")
+    
     
     def to_dict(self) -> Dict[str, Any]:
         """Convert the dungeon to a dictionary.
@@ -464,7 +526,6 @@ class Dungeon:
             "id": self.id,
             "dungeon_file": self.dungeon_file,
             "session_id": self.session_id,
-            "characters": {id: char.to_dict() for id, char in self.characters.items()},
             "npcs": {id: npc.to_dict() for id, npc in self.npcs.items()},
             "enemies": {id: enemy.to_dict() for id, enemy in self.enemies.items()},
             "map": self.map.to_dict() if self.map else None,
@@ -510,10 +571,8 @@ class Dungeon:
         dungeon.id = data.get("id", str(uuid.uuid4()))
         dungeon.dungeon_file = data.get("dungeon_file", "sample_dungeon.json")
         
-        # Load characters
-        for char_id, char_data in data.get("characters", {}).items():
-            character = Character.from_dict(char_data)
-            dungeon.characters[char_id] = character
+        # Load default player items
+        # todo
         
         # Load NPCs
         for npc_id, npc_data in data.get("npcs", {}).items():
@@ -554,15 +613,8 @@ class Dungeon:
             dungeon.scenario = Scenario.from_dict(data["scenario"])
         
         return dungeon
-    
-    def list_characters(self) -> List[Character]:
-        """List all characters in the dungeon.
-        
-        Returns:
-            A list of all characters
-        """
-        return list(self.characters.values())
-    
+
+
     def list_npcs(self) -> List[NPC]:
         """List all NPCs in the dungeon.
         
@@ -579,68 +631,50 @@ class Dungeon:
         """
         return list(self.enemies.values())
     
-    def get_map_mermaid_html(self) -> str:
-        """Get a Mermaid HTML representation of the map.
-        
-        Returns:
-            A string containing the Mermaid HTML
-        """
-        if self.map is None:
-            return "No map available"
-        
-        # This is a placeholder for Mermaid HTML generation
-        # In a real implementation, this would generate a Mermaid diagram
-        return "<div>Map visualization would go here</div>"
-    
     def get_help(self) -> str:
         """Get help for the dungeon.
         
         Returns:
             A string containing the help text
         """
-        # Get all available commands from the Action enum
-        help_text = "Available commands:\n\n"
+        help_text = "<hr><p class='output-area_bold'>~ Available Commands ~</p><ul>"
         
-        # Group commands by category
-        generic_actions = []
-        inventory_actions = []
-        combat_actions = []
+        # Loop through all action types where show_help is True
+        for action_type in ActionType:
+            if action_type.value["show_help"]:
+                # Add the action type help text as a header
+                help_text += f"<p class='output-area_bold'>{action_type.value['name']}</p>{action_type.value['help_text']}"
+                
+                # Find all actions of this type
+                actions_of_type = [action for action in Action if action.value["action_type"] == action_type]
+                
+                # Loop through all actions of this type
+                for action in actions_of_type:
+                    if action == Action.NONE:
+                        continue
+                    
+                    # Get the primary command (first alias)
+                    primary_command = action.value["alias"][0]
+                    
+                    # Get all aliases
+                    aliases = ", ".join(action.value["alias"][1:]) if len(action.value["alias"]) > 1 else ""
+                    
+                    # Format the command line with help text
+                    command_line = f"- {primary_command}"
+                    
+                    
+                    # Add the help text for this action
+                    if action.value["help_text"]:
+                        command_line += f" - {action.value['help_text']}"
+                    
+                    if aliases:
+                        command_line += f" (aliases: {aliases})"
+
+                    help_text += command_line + "\n"
+                
+                help_text += "\n"
         
-        for action in Action:
-            if action == Action.NONE:
-                continue
-            
-            # Get the primary command (first alias)
-            primary_command = action.value[0]
-            
-            # Get all aliases
-            aliases = ", ".join(action.value[1:]) if len(action.value) > 1 else ""
-            
-            # Format the command line
-            command_line = f"- {primary_command}"
-            if aliases:
-                command_line += f" (aliases: {aliases})"
-            
-            # Add to appropriate category
-            if action in [Action.MOVE, Action.LOOK, Action.EXAMINE, Action.TALK, Action.HELP]:
-                generic_actions.append(command_line)
-            elif action in [Action.INVENTORY, Action.USE, Action.EAT, Action.DRINK, Action.SMELL, 
-                            Action.BREAK, Action.TAKE, Action.GIVE, Action.OPEN, Action.CLOSE, Action.READ]:
-                inventory_actions.append(command_line)
-            elif action in [Action.ATTACK]:
-                combat_actions.append(command_line)
-        
-        # Add categories to help text
-        help_text += "Generic Commands:\n"
-        help_text += "\n".join(generic_actions) + "\n\n"
-        
-        help_text += "Inventory Commands:\n"
-        help_text += "\n".join(inventory_actions) + "\n\n"
-        
-        help_text += "Combat Commands:\n"
-        help_text += "\n".join(combat_actions) + "\n\n"
-        
-        help_text += "Examples:\n"
+        help_text += "<p class='output-area_bold'>Examples:</p>"
         help_text += "- move north\n"
         help_text += "- look around\n"
         help_text += "- examine chest\n"
@@ -648,6 +682,7 @@ class Dungeon:
         help_text += "- take sword\n"
         help_text += "- attack goblin\n"
 
+        help_text += "</ul>"
         return help_text
     
     def parse_command(self, command: str) -> Dict[str, Any]:
@@ -667,6 +702,28 @@ class Dungeon:
         4 - Items based on items in the room, or player inventory
         5 - Any specific amount of an item, a numeric value
         '''
+
+        # Get NPCs in the current room
+        npc_list = []
+        room_item_list = []
+        player_item_list = []
+
+        # TODO: This is a hack we need to refactor this
+        if self.current_room:
+            # Get NPCs in the current room
+            npc_list = [npc.name.lower() for npc in self.current_room.npcs]
+            # Also add aliases if they exist
+            for npc in self.current_room.npcs:
+                if hasattr(npc, 'alias') and npc.alias:
+                    npc_list.append(npc.alias.lower())
+            
+            # Get items in the current room
+            room_item_list = [item["item"].name.lower() for item in self.current_room.room_items]
+
+
+        
+
+
         
         # --- Default Output ---
         default_response = ["I'm not sure what you are trying to do here...",
@@ -674,72 +731,36 @@ class Dungeon:
                             "Ain't gonna happen.",
                             "No can do."
                             ]
-        output_message = random.choice(default_response)
+        output_message = "" #empty string
 
 
+         # Naughty word list; an imcomplete list to be sure, mainly added for humour
+        naughty_word_list = ["fuck", "shit", "asshole", "bitch"]
+        naughty_response = ["Does your mother know you talk like that?",
+                                       "Rude!",
+                                       "Seriously? No."
+                                        ]
+
+        # Remove non-alphabetic characters and tokenize the command
+        command_alpha = re.sub(r'[^a-zA-Z0-9\s]', '', command)
+        command_alpha_words = word_tokenize(command_alpha)
 
         amount = 1  # used for numbers, default is 1 
         primary_action = Action.NONE
-        room_img = "/static/img/interface/default_room.webp"  # Initialize with default image
-        
+
         # list of action words and alias
-        available_action_words = [{action: action.value} for action in Action]
+        available_action_words = [{action: action.value["alias"]} for action in Action]
         
         # list of directions
         available_direction_words = [{direction: direction.value} for direction in Direction]
         print(f"DEBUG: Available direction words: {available_direction_words}")
         # -----------------------
         
-        command_words = word_tokenize(command.lower())
+        # Remove non-alphabetic characters and tokenize the command
+        command_words = word_tokenize(command_alpha.lower())
         print(f"DEBUG: Command words: {command_words}")
         
-        # Get current room data
-        current_room = None
-        if self.current_room_id and self.map:
-            try:
-                print(f"DEBUG: Attempting to get room with ID: {self.current_room_id}")
-                # Check if the room exists in the map
-                room_exists = False
-                for room in self.map.get_all_rooms():
-                    if str(room.id) == self.current_room_id:
-                        room_exists = True
-                        break
-                
-                if room_exists:
-                    current_room = self.map.get_room_by_id(self.current_room_id)
-                    # Set the room image from the current room
-                    if current_room.room_img:
-                        room_img = current_room.room_img
-                else:
-                    print(f"DEBUG: Room with ID {self.current_room_id} not found in map")
-                    # Reset current_room_id if it's invalid
-                    self.current_room_id = None
-            except (ValueError, KeyError) as e:
-                print(f"DEBUG: Error getting room by ID: {e}")
-                # Reset current_room_id if it's invalid
-                self.current_room_id = None
-                pass
-        
-        # Get NPCs in the current room
-        npc_list = []
-        room_item_list = []
-        player_item_list = []
-        
-        if current_room:
-            # Get NPCs in the current room
-            npc_list = [npc.name.lower() for npc in current_room.npcs]
-            # Also add aliases if they exist
-            for npc in current_room.npcs:
-                if hasattr(npc, 'alias') and npc.alias:
-                    npc_list.append(npc.alias.lower())
-            
-            # Get items in the current room
-            room_item_list = [item.name.lower() for item in current_room.treasures]
-        
-        # Get items in player inventory
-        if self.active_character_id and self.active_character_id in self.characters:
-            active_character = self.characters[self.active_character_id]
-            player_item_list = [item.name.lower() for item in active_character.items]
+     
         
         # Command Actions
         '''
@@ -750,45 +771,38 @@ class Dungeon:
             if len([word for word in command_words 
                  if word in list(action_word.values())[0]]) > 0]  # only one list
         
-        # get room direction information
-        available_directions = []
-        if self.current_room_id and self.map:
-            try:
-                connected_rooms = self.map.get_connected_rooms(self.current_room_id)
-                available_directions = [direction.value[0] for direction in connected_rooms.keys()]
-                print(f"DEBUG: Available directions: {available_directions}")
-            except (ValueError, KeyError) as e:
-                print(f"DEBUG: Error getting connected rooms: {e}")
-                available_directions = []
-
-        # Get room_direction_info from the current room
-        room_direction_info = ""
-        if current_room:
-            room_direction_info = current_room.get_room_direction_info()
-        else:
-            room_direction_info = "There are no exits from this room."
+       
         
-
-        # Naughty word list; an imcomplete list to be sure, mainly added for humour
-        naughty_word_list = ["fuck", "shit", "asshole", "bitch", "cunt", "dick", "faggot", "pussy", "whore"]
-        command_words# Get room_direction_info from the current room
-
-
-
 
         # find primary action, if not primary action, return NONE
         if len(command_actions) == 0:
             # return Action.NONE
             output_message = random.choice(default_response)
-            
+        
+        elif len(set(naughty_word_list) & set(command_words)) > 0:
+            output_message = random.choice(naughty_response)
+
         else:
             primary_action = list(command_actions[0])[0]
             
             # alias of action
-            available_action_words_alias = list(itertools.chain.from_iterable([action.value for action in Action]))
+            available_action_words_alias = list(itertools.chain.from_iterable([action.value["alias"] for action in Action]))
             available_directions_alias = list(itertools.chain.from_iterable([direction.value for direction in Direction]))
             remaining_command_words = [word for word in command_words if word not in available_action_words_alias]
-            
+
+        
+            # Get room_direction_info from the current room
+            # Used for MOVE and LOOK commands
+            room_direction_info = ""
+            if self.current_room:
+                room_direction_info = self.current_room.get_room_direction_info()
+            else:
+                room_direction_info = "There are no exits from this room."
+
+
+
+            #TODO: Refactor
+            '''
             # NPC
             npc_target = None
             if remaining_command_words:
@@ -797,7 +811,12 @@ class Dungeon:
                         npc_target = word
                         remaining_command_words.remove(word)
                         break
-            
+               
+            # Get items in player inventory
+            if self.active_character_id and self.active_character_id in self.characters:
+                active_character = self.characters[self.active_character_id]
+                player_item_list = [item.name.lower() for item in active_character.items]
+
             # Enemy
             enemy_target = None
             if remaining_command_words:
@@ -823,38 +842,83 @@ class Dungeon:
                     remaining_command_words.pop(0)
                 except (ValueError, IndexError):
                     pass
-            
+            '''
+
             # output
      
             # Special Actions
+            # --------------------------------
             if primary_action is Action.INIT:
                 scenario_welcome_message = self.scenario.get_welcome_message()
-                room_description = current_room.description
                 output_message = f"{scenario_welcome_message}\n\n {room_description}\n{room_direction_info}."
                 
             # HELP
-            if primary_action is Action.HELP:
+            # --------------------------------
+            elif primary_action is Action.HELP:
                 help_text = self.get_help()
                 output_message = help_text
+
+            # CLEAR
+            # --------------------------------
+            elif primary_action is Action.CLEAR:
+                output_message = "CLEAR_OUTPUT"
         
-            if primary_action is Action.INVENTORY:
-                output_message = "Ok, here's your inventory"
-        
-            if primary_action is Action.LOOK:
-                if current_room:
+            # INVENTORY
+            # --------------------------------
+            elif primary_action is Action.INVENTORY:
+                # Check if player character exists
+                if not self.player_character:
+                    output_message = "You need to set a player character first."
+                else:
+                    # Get the player's inventory
+                    inventory = self.player_character.inventory
                     
-                    # Check if the AI has updated the description
-                    if current_room.get_ai_update():
-                        output_message = current_room.get_ai_description()
-                    else:           
-                        output_message = current_room.description
-                    # add direction information
+                    if not inventory:
+                        output_message = "Your inventory is empty."
+                    else:
+                        # Create a list of item names and types
+                        item_details = [f"<span class='console-highlight'>{item.name}</span> (a {item.item_type})" for item in inventory]
+                        
+                        # Format the output message
+                        if len(item_details) == 1:
+                            output_message = f"Your inventory contains: {item_details[0]}."
+                        else:
+                            # Join all item details with commas and 'and' for the last item
+                            formatted_items = ", ".join(item_details[:-1])
+                            formatted_items += f" and {item_details[-1]}"
+                            
+                            output_message = f"Your inventory contains: {formatted_items}."
+
+                
+
+            # LOOK
+            # --------------------------------
+            elif primary_action is Action.LOOK:
+                if self.current_room:
+                    # Check if the AI has updated the description  
+                    output_message = self.current_room.get_room_details()
                     output_message += f"\n{room_direction_info}"
                 else:
                     output_message = "You can't see anything in the darkness."
                 
             # MOVE DIRECTION
-            if primary_action is Action.MOVE:
+            # --------------------------------
+            elif primary_action is Action.MOVE:
+
+                # get room direction information
+                available_directions = []
+                if self.current_room_id and self.map:
+                    try:
+                        connected_rooms = self.map.get_connected_rooms(self.current_room_id)
+                        available_directions = [direction.value[0] for direction in connected_rooms.keys()]
+                        print(f"DEBUG: Available directions: {available_directions}")
+                    except (ValueError, KeyError) as e:
+                        print(f"DEBUG: Error getting connected rooms: {e}")
+                        available_directions = []
+
+                room_description = self.current_room.description
+                room_name = self.current_room.name
+                
                 print(f"DEBUG: Processing MOVE command with words: {command_words}")
                 command_directions = [direction_word.keys() for direction_word in available_direction_words 
                     if len([word for word in command_words 
@@ -864,7 +928,7 @@ class Dungeon:
                 
                 # No direction specified
                 if len(command_directions) == 0:
-                    if current_room and self.map:
+                    if self.current_room and self.map:
                         try:
                             print(f"DEBUG: Current room ID: {self.current_room_id}")
                             print(f"DEBUG: Available directions: {available_directions}")
@@ -875,7 +939,7 @@ class Dungeon:
                     if available_directions:
                         if remaining_command_words:
                             invalid_direction = " ".join(remaining_command_words)
-                            output_message = f"You can't move {invalid_direction}. What direction do you want to move in? {room_direction_info}."
+                            output_message = f"You can't move <span class='console-highlight'>{invalid_direction}</span>. What direction do you want to move in? {room_direction_info}."
                         else:
                             output_message = f"What direction do you want to move in? {room_direction_info}."
                     else:
@@ -885,66 +949,195 @@ class Dungeon:
                     print(f"DEBUG: Primary direction: {primary_direction}")
                     
                     # Check if there's a connection in that direction
-                    if current_room and self.map:
+                    if self.current_room and self.map:
                         try:
                             # Get the connected room in the specified direction
                             connected_room = self.map.get_connected_room(self.current_room_id, primary_direction)
                             if connected_room:
                                 # Update the current room
                                 self.current_room_id = str(connected_room.id)
+                                self.set_current_room(self.current_room_id)
                                 # Mark the new room as visited
                                 self.map.mark_room_visited(connected_room.id)
-                                output_message = f"You move {primary_direction}.\n\n{connected_room.description}\n{connected_room.get_room_direction_info()}"
+                                output_message = f"You move <span class='console-highlight'>{primary_direction}</span>.\n\n{connected_room.description}\n{connected_room.get_room_direction_info()}"
                                 
                                 # Get the room image for the new room
                                 room_img = connected_room.room_img if connected_room.room_img else "/static/img/interface/default_room.webp"
                             else:
                                 output_message = "You can't go that direction."
-                                room_img = None
                         except (ValueError, KeyError):
-                            output_message = "You can't go that direction."
-                            room_img = None
+                            output_message = "You can't go that direction."           
                     else:
                         output_message = "You can't move right now."
-                        room_img = None
-                
-            # ATTACK [NPC/ENEMY]
-            elif primary_action is Action.ATTACK:
-                if enemy_target:
-                    output_message = f"You attack the {enemy_target}."
-                else:
-                    output_message = "What do you want to attack?"
-                room_img = None
-        
-            # TALK
-            elif primary_action is Action.TALK:
-                if npc_target:
-                    output_message = f"You talk to {npc_target}."
-                else:
-                    output_message = "Who do you want to talk to?"
-                
-            # EXAMINE
-            elif primary_action is Action.EXAMINE:
-                if item_target:
-                    output_message = f"You examine the {item_target}."
-                elif npc_target:
-                    output_message = f"You examine {npc_target}."
-                else:
-                    output_message = "What do you want to examine?"
-                 
-            # Inventory interaction
+            
+            # VERB SPECIFIC ACTIONS
             else:
-                pass
-                # [ITEM ACTION] [ITEM] [AMOUNT] - Assumes player since no enemy/NPC
-                # [ITEM ACTION] [ITEM] [NPC] [AMOUNT] - Interact with NPC
+                if not remaining_command_words:
+                    output_message = f'What do you want to <span class="console-highlight">{primary_action.name.lower()}</span>?'
+                else:
+                    room_target_item = None
+                    player_target_item = None
+                    target_item = None
+                    target_subject = None
 
-        # Get the current room image if not already set
-        if room_img is None and current_room:
-            room_img = current_room.room_img if current_room.room_img else "/static/img/interface/default_room.webp"
-        elif room_img is None:
-            room_img = "/static/img/interface/default_room.webp"
+                    # Get target and subject
+                    # Check room items first, then player inventory
+                     # Get all items in the current room
+                    room_items = self.current_room.room_items
+                    player_items = self.player_character.inventory
+                    
+                    # Check each word against each item's name, alias, and item_type
+                    for word in remaining_command_words:
+                        for item_dict in room_items:
+                            # Get the actual Item object from the dictionary
+                            item = item_dict["item"]
+                            
+                            # Check if the word matches the item's name
+                            if word.lower() == item.name.lower():
+                                room_target_item = item
+                                break
+                            
+                            # Check if the word matches any of the item's aliases
+                            if hasattr(item, 'alias') and any(word.lower() == alias.lower() for alias in item.alias):
+                                room_target_item = item                    
+                                break
+                            
+                            # Check if the word matches the item's type (if it has one)
+                            if hasattr(item, 'item_type') and item.item_type and word.lower() == item.item_type.lower():
+                                room_target_item = item
+                                break
 
-        return {"action": primary_action, "message": output_message, "room_img": room_img}
+                    # Check each word against each item's name, alias, and item_type
+                    for word in remaining_command_words:
+                        for item in player_items:
+                            # Check if the word matches the item's name
+                            if word.lower() == item.name.lower():
+                                player_target_item = item
+                                break
+                            
+                            # Check if the word matches any of the item's aliases
+                            if hasattr(item, 'alias') and any(word.lower() == alias.lower() for alias in item.alias):
+                                player_target_item = item                    
+                                break
+                            
+                            # Check if the word matches the item's type (if it has one)
+                            if hasattr(item, 'item_type') and item.item_type and word.lower() == item.item_type.lower():
+                                player_target_item = item
+                                break
+                        
+                    if not room_target_item and not player_target_item:
+                        output_message = f"I don't see anything called '{' '.join(remaining_command_words)}' to {primary_action.name.lower()}."
+                 
+            
+                    else:
+
+                        # Prioritise room target item
+                        if room_target_item:
+                            target_item = room_target_item
+                        elif player_target_item:
+                            target_item = player_target_item
+
+                        # --------------------------------
+                        # EXAMINE
+                        # --------------------------------
+                        if primary_action is Action.EXAMINE:
+                        
+                                # Check if any of the remaining command words match an item in the room
+                                if target_item:
+                                    # We found a matching item, examine it
+                                    # use a, an, or the depending on the item
+                                    a_or_an = "a"
+                                    if target_item.name[0].lower() in ['a', 'e', 'i', 'o', 'u']:
+                                        a_or_an = "an"
+                            
+                                    output_message = f"You examine the <span class='console-highlight'>{target_item.item_type.lower()}</span>. You see {a_or_an} <span class='console-highlight'>{target_item.name}</span>. {target_item.detailed_description}"
+                                else:
+                                    # No matching item found
+                                    output_message = f"I don't see anything called '{' '.join(remaining_command_words)}' to examine."
+
+                        # TAKE
+                        # --------------------------------
+                        # Only room target item
+                        elif primary_action is Action.TAKE:
+                            # Check if player character exists
+                            if not self.player_character:
+                                output_message = "You need to set a player character first."
+                            else:
+                                # Remove the item from the room
+                                self.current_room.remove_item(room_target_item)
+                                
+                                # Add the item to the player's inventory
+                                self.player_character.add_to_inventory(room_target_item)
+                                
+                                # Use a or an depending on the item name
+                                a_or_an = "a"
+                                if room_target_item.name[0].lower() in ['a', 'e', 'i', 'o', 'u']:
+                                    a_or_an = "an"
+                                
+                                output_message = f"You take {a_or_an} <span class='console-highlight'>{room_target_item.name}</span> and add it to your inventory."
+
+                        # DROP
+                        # --------------------------------
+                        # Only player target item
+                        elif primary_action is Action.DROP:
+                            # Check if player character exists
+                            if not self.player_character:
+                                output_message = "You need to set a player character first."
+                            else:
+                                # Check if the item is in the player's inventory
+                                if player_target_item:
+                                    # Remove the item from the player's inventory
+                                    self.player_character.remove_from_inventory(player_target_item)
+                                    
+                                    # Add the item to the current room
+                                    self.current_room.add_item(player_target_item)
+                                    
+                                    # Use a or an depending on the item name
+                                    a_or_an = "a"
+                                    if player_target_item.name[0].lower() in ['a', 'e', 'i', 'o', 'u']:
+                                        a_or_an = "an"
+                                    
+                                    output_message = f"You drop {a_or_an} <span class='console-highlight'>{player_target_item.name}</span> in the room."
+                                else:
+                                    # Item not found in inventory
+                                    output_message = f"You don't have anything called '{' '.join(remaining_command_words)}' to drop."
+
+                        # INVENTORY actions
+                        # --------------------------------
+                        #EAT  DRINK SMELL  BREAK  THROW READ
+                    
+
+                        # GIVE
+                        # --------------------------------
+                        elif primary_action is Action.GIVE:
+                            output_message = f"<Not implemented> Give item."
+
+                        
+
+                        # ATTACK [NPC/ENEMY]
+                        # --------------------------------
+                        elif primary_action is Action.ATTACK:
+                            output_message = f"<Not implemented> What do you want to attack?"
+                    
+                        # TALK
+                        # --------------------------------
+                        elif primary_action is Action.TALK:
+                            output_message = f"<Not implemented> Who do you want to talk to?"
+
+                        # Inventory interaction
+                        # --------------------------------
+                        else:
+                            pass
+                            # [ITEM ACTION] [ITEM] [AMOUNT] - Assumes player since no enemy/NPC
+                            # [ITEM ACTION] [ITEM] [NPC] [AMOUNT] - Interact with NPC
+
+            # Get the current room image if not already set
+            # TODO: This is a hack to get the room image, we need to refactor this
+
+        
+     
+
+        return {"action": primary_action, "message": output_message, "room_img": self.current_room.room_img}
 
     def get_use_ai(self) -> bool:
         """Get the current value of use_ai."""
@@ -997,3 +1190,22 @@ class Dungeon:
         """
         self.score += value
         print(f"DEBUG: Added {value} to player score. New score: {self.score}") 
+
+    def set_player_character(self, username: str) -> None:
+        """Set the player character with the given username.
+        
+        Args:
+            username: The username to use for the player character
+        """
+        # Create a new character for the player
+        self.player_character = Character(
+            name=username,
+            description=f"A brave adventurer named {username}",
+            hit_points=100,
+            dexterity=10,
+            intelligence=10,
+            perception=10,
+            strength=10,
+            wisdom=10
+        )
+        

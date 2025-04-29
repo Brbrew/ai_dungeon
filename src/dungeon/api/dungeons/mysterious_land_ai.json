@@ -10,43 +10,67 @@
       "name": "farm",
       "description": "A peaceful farm area with crops and animals",
       "theme_type": "outdoor",
-      "music": "farm_theme.mp3"
+      "music": ""
     },
     {
       "name": "forest",
       "description": "A dense forest with tall trees and wildlife",
       "theme_type": "outdoor",
-      "music": "forest_theme.mp3"
+      "music": ""
     },
     {
       "name": "swamp",
       "description": "A murky swamp with mist and strange sounds",
       "theme_type": "outdoor",
-      "music": "swamp_theme.mp3"
+      "music": ""
     },
     {
       "name": "house",
       "description": "A cozy house with warm lighting",
       "theme_type": "indoor",
-      "music": "house_theme.mp3"
+      "music": ""
     },
     {
       "name": "castle",
       "description": "A grand castle with stone walls and torches",
       "theme_type": "indoor",
-      "music": "castle_theme.mp3"
+      "music": ""
     },
     {
       "name": "graveyard",
       "description": "A spooky graveyard with fog and moonlight",
       "theme_type": "outdoor",
-      "music": "graveyard_theme.mp3"
+      "music": ""
     },
     {
       "name": "crypt",
       "description": "A dark crypt with ancient tombs",
       "theme_type": "indoor",
-      "music": "crypt_theme.mp3"
+      "music": ""
+    },
+    {
+      "name": "plain",
+      "description": "A vast plain with tall grass and scattered trees",
+      "theme_type": "outdoor",
+      "music": ""
+    },
+    {
+      "name": "desert",
+      "description": "A hot desert with sand dunes and cacti",
+      "theme_type": "outdoor",
+      "music": ""
+    },
+    {
+      "name": "mountain",
+      "description": "A rocky mountain with steep cliffs and snow-capped peaks",
+      "theme_type": "outdoor",
+      "music": ""
+    },
+    {
+      "name": "village",
+      "description": "A small village with a church and a school",
+      "theme_type": "indoor",
+      "music": ""
     }
   ],
   "map": {
@@ -54,7 +78,7 @@
       {
         "name": "Starting Room",
         "description": "A cozy room with stone walls and a warm fireplace. The door to adventure and the outside world lies before you.",
-        "theme": "house",
+        "theme": "village",
         "room_type": "world_start",
         "room_ref_id": "world_start",
         "npcs": [],
@@ -64,7 +88,37 @@
         "is_locked": false,
         "room_img": "/static/img/theme/house/world_start.webp",
         "ai_update": true,
-        "ai_description": "As you step into this humble abode, the warmth of the stone walls envelops you, carrying the scent of aged mortar and the faint echo of past gatherings. The room is bathed in the golden glow of a crackling fireplace, its flames dancing merrily and casting shadows that seem to tell their own tales. The air is thick with the aroma of burning wood and the faint hint of earthy dampness, a reminder of the world beyond these comforting confines. The hearth, with its blackened stones, stands as a testament to countless nights of warmth and companionship, its embers now a gentle whisper of the life that once thrived here.\n\nBefore you lies the threshold, a sturdy oak door adorned with iron hinges, its surface weathered by the touch of countless hands over the years. It stands as the last bastion of comfort before the unknown, a portal to the vast and untamed world beyond. The door, slightly ajar, beckons with a soft creak, promising adventure and the whispers of distant lands. As you stand there, the warmth of the fire at your back, you can feel the weight of the journey ahead, the promise of untold wonders, and the lingering embrace of the home you are about to leave behind."
+        "ai_description": "As you step into this humble abode, the warmth of the stone walls envelops you, carrying the scent of aged mortar and the faint echo of past gatherings. The room is bathed in the golden glow of a crackling fireplace, its flames dancing merrily and casting shadows that seem to tell their own tales. The air is thick with the aroma of burning wood and the faint hint of earthy dampness, a reminder of the world beyond these comforting confines. The hearth, with its blackened stones, stands as a testament to countless nights of warmth and companionship, its embers now a gentle whisper of the life that once thrived here.\n\nBefore you lies the threshold, a sturdy oak door adorned with iron hinges, its surface weathered by the touch of countless hands over the years. It stands as the last bastion of comfort before the unknown, a portal to the vast and untamed world beyond. The door, slightly ajar, beckons with a soft creak, promising adventure and the whispers of distant lands. As you stand there, the warmth of the fire at your back, you can feel the weight of the journey ahead, the promise of untold wonders, and the lingering embrace of the home you are about to leave behind.",
+        "room_item_location": "on a table",
+        "room_items": [
+              {
+                  "item_type": "scroll",
+                  "name": "Intro Message",
+                  "alias":["Intro Message", "Intro", "Intro Message Scroll","Scroll"],
+                  "description": "A rolled up piece of parchment.",
+                  "detailed_description": "This scroll contains a message from the creator of the dungeon. It is a message to the player to help them navigate the dungeon.",
+                  "scroll_text": "You are in a dungeon. You can go north, south, east, or west. You can also look around you. You can also pick up items. You can also read this scroll.",
+                  "room_ref_id": "world_start"
+              },
+              {
+                "item_type": "potion",
+                "name": "Healing Potion",
+                "alias":["Healing Potion", "Potion", "Healing Potion Potion","Potion"],
+                "description": "A small glass vial with a green liquid.",
+                "detailed_description": "This potion is a green liquid that heals the player.",
+                "potion_text": "You drink the potion and feel your wounds heal.",
+                "room_ref_id": "world_start"
+            },
+            {
+              "item_type": "key",
+              "name": "Castle Key",
+              "unlock_room_ref_id": "castle_entrance",
+              "alias":["Castle Key", "Key", "Castle Key Key","Key"],
+              "description": "A small key with a castle symbol.",
+              "detailed_description": "This key is used to unlock the castle door.",
+              "key_text": "You use the key to unlock the castle door."
+            }
+        ]
       },
       {
         "name": "Farm",
@@ -129,7 +183,7 @@
       {
         "name": "Plains",
         "description": "You stand on a grassy plain.",
-        "theme": "plains",
+        "theme": "plain",
         "room_type": "plains1",
         "room_ref_id": "plains1",
         "npcs": [],
@@ -159,7 +213,7 @@
       {
         "name": "Base of Mountains",
         "description": "You stand on a open grassy plain, with mountains in the distance.",
-        "theme": "plains",
+        "theme": "plain",
         "room_type": "plains_mtn1",
         "room_ref_id": "plains_mtn1",
         "npcs": [],
@@ -174,7 +228,7 @@
       {
         "name": "Base of Mountains",
         "description": "You stand on a open grassy plain, with mountains in the distance.",
-        "theme": "plains",
+        "theme": "plain",
         "room_type": "plains_mtn2",
         "room_ref_id": "plains_mtn2",
         "npcs": [],
@@ -189,7 +243,7 @@
       {
         "name": "Mountains",
         "description": "You are high up on a mountain, the view is breathtaking.",
-        "theme": "mountains",
+        "theme": "mountain",
         "room_type": "mountain1",
         "room_ref_id": "mountain1",
         "npcs": [],
@@ -204,7 +258,7 @@
       {
         "name": "Mountains",
         "description": "You are high up on a mountain, the view is breathtaking.",
-        "theme": "mountains",
+        "theme": "mountain",
         "room_type": "mountain2",
         "room_ref_id": "mountain2",
         "npcs": [],
@@ -219,7 +273,7 @@
       {
         "name": "Mountains",
         "description": "You are high up on a mountain, ta massive blizzard is raging.",
-        "theme": "mountains",
+        "theme": "mountain",
         "room_type": "mountain_blizz",
         "room_ref_id": "mountain_blizz",
         "npcs": [],
@@ -598,4 +652,8 @@
       }
     }
   }
+  ,
+  "npcs": [],
+  "traps": [],
+  "treasures": []
 }

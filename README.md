@@ -20,8 +20,22 @@ The other part of the project is to make it configrable, so any number of "dunge
 AI is an awesome and very powerful tool, however it can only do what you tell it to do, it's not magic. 
 
 ## TODO
+- Add changelog.md and version control
+- Clean up parse_command for futher seperation of concern
+- Remove multiple charecters and only have one player charecter
+- Add inventory to player charecter
+- Modify help to use ENUM classes to build help text
+- Move help to modal window
+- Add icons under room (Inventory, Map, Help)
+- Add doors/path blockers to rooms (door, mud slide, blizzard, etc.)
+- Add keys to unlock doors
+- Add portals (not drawn on map, but can "warp" to any room)
+- Add map validation to check for loop-backs (east-west-east)
+- Add containers (can be treasure chests or other things ike wardrobes)
 - Add levels to map generator
 - Clean up interface
+- Add database for session management (e.g. Redis?)
+- Add item interactions
 - Add NPCs
 - Dynamic NPC interaction with AI, like a chat bot with a specific personality, and one that can interact with game elements.
 - Add default rooms/images in a template so that new dungeons can be created based on existing art assets.

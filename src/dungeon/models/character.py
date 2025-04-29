@@ -1,6 +1,6 @@
 """Character model for the dungeon project."""
 from decimal import Decimal
-from typing import List, Any
+from typing import List, Any, Optional
 from enum import Enum
 
 from .base import BaseModel
@@ -24,13 +24,15 @@ class Character(BaseModel):
     def __init__(
         self,
         name: str,
-        description: str,
-        hit_points: Decimal,
-        dexterity: int,
-        intelligence: int,
-        strength: int,
-        gender: str = "unknown",
-        race: str = "unknown",
+        description:  Optional[str] = None,
+        hit_points: Decimal = 100,
+        dexterity: int = 10,
+        intelligence: int = 10,
+        perception: int = 10,
+        strength: int = 10,
+        wisdom: int = 10,
+        gender: Optional[str] = None,
+        race: Optional[str] = None,
         alignment: Alignment = Alignment.TRUE_NEUTRAL,
         **kwargs: Any
     ) -> None:
@@ -73,7 +75,11 @@ class Character(BaseModel):
         self._gender = str(gender)
         self._race = str(race)
         self._alignment = alignment
-        self._items: List[Item] = []
+        self._perception = int(perception)
+        self._wisdom = int(wisdom)
+        
+        # Inventory
+        self._inventory: List[Item] = []
     
     @property
     def name(self) -> str:
@@ -245,23 +251,70 @@ class Character(BaseModel):
         self._alignment = value
     
     @property
-    def items(self) -> List[Item]:
-        """Get the character's items.
+    def perception(self) -> int:
+        """Get the character's perception.
         
         Returns:
-            A copy of the character's items
+            The character's perception
         """
-        return self._items.copy()
+        return self._perception
     
-    def add_item(self, item: Item) -> None:
+    @perception.setter
+    def perception(self, value: int) -> None:
+        """Set the character's perception.
+        
+        Args:
+            value: The new perception value (1-20)
+            
+        Raises:
+            ValueError: If perception is not between 1 and 20
+        """
+        if not 1 <= value <= 20:
+            raise ValueError("Perception must be between 1 and 20")
+        self._perception = int(value)
+    
+    @property
+    def wisdom(self) -> int:
+        """Get the character's wisdom.
+        
+        Returns:
+            The character's wisdom
+        """
+        return self._wisdom
+    
+    @wisdom.setter
+    def wisdom(self, value: int) -> None:
+        """Set the character's wisdom.
+        
+        Args:
+            value: The new wisdom value (1-20)
+            
+        Raises:
+            ValueError: If wisdom is not between 1 and 20
+        """
+        if not 1 <= value <= 20:
+            raise ValueError("Wisdom must be between 1 and 20")
+        self._wisdom = int(value)
+    
+    @property
+    def inventory(self) -> List[Item]:
+        """Get the character's inventory.
+        
+        Returns:
+            A copy of the character's inventory
+        """
+        return self._inventory.copy()
+    
+    def add_to_inventory(self, item: Item) -> None:
         """Add an item to the character's inventory.
         
         Args:
             item: The item to add
         """
-        self._items.append(item)
+        self._inventory.append(item)
+        print(f"DEBUG: Added {item.name} to {self.name}'s inventory")
     
-    def remove_item(self, item: Item) -> None:
+    def remove_from_inventory(self, item: Item) -> None:
         """Remove an item from the character's inventory.
         
         Args:
@@ -271,9 +324,10 @@ class Character(BaseModel):
             ValueError: If the item is not in the inventory
         """
         try:
-            self._items.remove(item)
+            self._inventory.remove(item)
+            print(f"DEBUG: Removed {item.name} from {self.name}'s inventory")
         except ValueError:
-            raise ValueError(f"Item {item.name} not found in inventory")
+            raise ValueError(f"Item {item.name} not found in {self.name}'s inventory")
     
     def to_dict(self) -> dict:
         """Convert the character to a dictionary.
@@ -288,9 +342,31 @@ class Character(BaseModel):
             "hit_points": float(self.hit_points),
             "dexterity": self.dexterity,
             "intelligence": self.intelligence,
+            "perception": self.perception,
             "strength": self.strength,
+            "wisdom": self.wisdom,
             "gender": self.gender,
             "race": self.race,
             "alignment": self.alignment.value,
-            "items": [item.to_dict() for item in self.items]
-        } 
+            "inventory": [item.to_dict() for item in self.inventory]
+        }
+    
+    @classmethod
+    def from_dict(cls, data: dict) -> 'Character':
+        """Create a character from a dictionary.
+        
+        Args:
+            data: Dictionary containing character data
+            
+        Returns:
+            A new Character instance
+        """
+        # Convert alignment string back to enum
+        if "alignment" in data:
+            data["alignment"] = Alignment(data["alignment"])
+            
+        # Convert items back to Item objects
+        if "inventory" in data:
+            data["inventory"] = [Item.from_dict(item_data) for item_data in data["inventory"]]
+            
+        return cls(**data) 

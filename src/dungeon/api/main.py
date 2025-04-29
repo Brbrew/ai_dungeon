@@ -11,6 +11,9 @@ import nltk
 from pathlib import Path
 from uuid import UUID
 
+# Version information
+__version__ = "0.0.1"
+
 from src.dungeon.models.dungeon import Dungeon
 from src.dungeon.models.map import Map
 from src.dungeon.models.room import Room
@@ -131,6 +134,9 @@ async def login(request: Request, username: str = Form(...)):
         description=f"A dungeon created for {username}",
         session_id=session_id
     )
+    
+    # Set the player character with the username
+    dungeon.set_player_character(username)
     
     # Debug: Check if the map was loaded correctly
     print(f"DEBUG: Dungeon created for {username}")
@@ -404,7 +410,7 @@ async def show_map(request: Request):
                 height: 100%;
                 width: 100%;
                 z-index: 0;
-                background: url("/static/img/interface/gothic_castle.webp");
+                background: url("/static/img/interface/castle_map.webp");
                 background-position: 50%;
                 background-repeat: no-repeat;
                 background-size: cover;

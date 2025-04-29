@@ -796,12 +796,22 @@ class Map:
                     font-size: 10px;
                     isolation: isolate;
                 }
-                .room_circle:hover {
-                    fill: #000000;
-                    opacity: 0.25;
-                    stroke: "#99FF00"; 
-                    stroke-width: "3"; 
-                    stroke-opacity: "0.25";
+                .room_icon:hover {
+                    filter: grayscale(100%);
+                    -webkit-filter: grayscale(100%);
+                    -moz-filter: grayscale(100%);
+                    -ms-filter: grayscale(100%);
+                    -o-filter: grayscale(100%);
+                }
+                .room_unvisited {
+                    filter: grayscale(100%);
+                    -webkit-filter: grayscale(100%);
+                    -moz-filter: grayscale(100%);
+                    -ms-filter: grayscale(100%);
+                    -o-filter: grayscale(100%);
+                }
+                .room_visited {
+                   filter: drop-shadow(0px 5px 5px #000000);
                 }
                 </style>
             </defs>'''
@@ -821,29 +831,32 @@ class Map:
                         # Draw a line from room to connected room
                         svg += f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="black" stroke-width="2" />'
         
-        # Add rooms (circles)
+        # Add rooms (using theme icons instead of circles)
         for room_id, (x, y) in adjusted_positions.items():
             room = self._rooms[room_id]
             
-            # Get the theme color from the room's theme
-            theme_color = room.theme.color if hasattr(room.theme, 'color') else "white"
+            # Get the theme icon from the room's theme
+            theme_icon = room.theme.icon if hasattr(room.theme, 'icon') else "/static/img/icon/default_icon.webp"
             
-            # Determine fill color based on whether the room has been visited
-            # Use a lighter version of the theme color for visited rooms
-            fill_color = theme_color if room_id in self._visited_rooms else "white"
+            # Calculate icon size (diameter of the circle)
+            icon_size = room_radius * 2
             
-            # Draw the room circle
-            svg += f'<circle class="room_circle" cx="{x}" cy="{y}" r="{room_radius}" fill="{fill_color}" stroke="black" stroke-width="3" stroke-opacity="0.25"/>'
+            # Calculate icon position (center of the circle)
+            icon_x = x - room_radius
+            icon_y = y - room_radius
             
-
-            # Add player triangle if this is the current room
-            # This will place the icon below the text
+            # Draw the room icon
+            # Determine if the room has been visited
+            room_class = "room_visited" if room_id in self._visited_rooms else "room_unvisited"
+            svg += f'<image class="room_icon {room_class}" x="{icon_x}" y="{icon_y}" width="{icon_size}" height="{icon_size}" href="{theme_icon}" />'
+            
+            # Add player indicator if this is the current room
             if current_room_id and room_id == current_room_id:
-                # Calculate triangle points (smaller than the room circle)
+                # Add a green triangle below the icon
                 triangle_size = room_radius * 0.3
-                triangle_offset = y + (room_radius * 1) # offset the triangle down by 1 room radius, using 1 for now
+                triangle_offset = y + room_radius + 5  # Position below the icon
                 triangle_points = f"{x},{triangle_offset-triangle_size} {x-triangle_size},{triangle_offset+triangle_size} {x+triangle_size},{triangle_offset+triangle_size}"
-                svg += f'<polygon points="{triangle_points}" fill="#99FF00" stroke="black" stroke-width="1" stroke-opacity="0.25"/>'
+                svg += f'<polygon points="{triangle_points}" fill="#99FF00" stroke="black" stroke-width="1" />'
         
             # Add room name
             room_name = room.name
@@ -863,7 +876,8 @@ class Map:
                 room_text_output += f'<tspan x="{x}" dy="{y_step}px">{word.strip()}</tspan>'
                 y_step = 14
 
-            svg += f'<text x="{x}" y="{y-y_offset}" text-anchor="middle" class="text_class">{room_text_output}</text>'
+            # Position text below the icon
+            svg += f'<text x="{x}" y="{y + room_radius + 20}" text-anchor="middle" class="text_class">{room_text_output}</text>'
             
             
         svg += '</svg>'

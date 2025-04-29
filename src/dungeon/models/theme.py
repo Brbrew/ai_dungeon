@@ -26,6 +26,24 @@ class Theme(BaseModel):
         "sewer": "MediumSeaGreen",
         "cave": "SaddleBrown"
     }
+
+    
+
+    THEME_ICONS = {
+        "farm": "/static/img/icon/farm_icon.webp",
+        "forest": "/static/img/icon/forest_icon.webp",
+        "swamp": "/static/img/icon/swamp_icon.webp",
+        "house": "/static/img/icon/house_icon.webp",
+        "castle": "/static/img/icon/castle_icon.webp",
+        "graveyard": "/static/img/icon/grave_icon.webp",
+        "crypt": "/static/img/icon/grave_icon.webp",
+        "mountain": "/static/img/icon/mountain_icon.webp",
+        "plain": "/static/img/icon/plain_icon.webp",
+        "desert": "/static/img/icon/desert_icon.webp",
+        "sewer": "/static/img/icon/sewer_icon.webp",
+        "cave": "/static/img/icon/cave_icon.webp",
+        "village": "/static/img/icon/village_icon.webp"
+    }
     
     def __init__(
         self,
@@ -50,6 +68,7 @@ class Theme(BaseModel):
         self._type = theme_type
         self._music = music
         self.color = self.THEME_COLORS.get(theme_name.lower(), "Gray")  # Default to Gray if theme not found
+        self.icon = self.THEME_ICONS.get(theme_name.lower(), "/static/img/icon/default_icon.webp")  # Default icon if theme not found
     
     @property
     def name(self) -> str:
@@ -87,6 +106,24 @@ class Theme(BaseModel):
         """
         return self._music
     
+    @property
+    def icon(self) -> str:
+        """Get the theme's icon file path.
+        
+        Returns:
+            The theme's icon file path
+        """
+        return self._icon
+    
+    @icon.setter
+    def icon(self, value: str) -> None:
+        """Set the theme's icon file path.
+        
+        Args:
+            value: The icon file path to set
+        """
+        self._icon = value
+    
     def to_dict(self) -> Dict[str, Any]:
         """Convert the theme to a dictionary.
         
@@ -99,6 +136,8 @@ class Theme(BaseModel):
             "description": self.description,
             "theme_type": self.theme_type,
             "music": self.music,
+            "icon": self.icon,
+            "color": self.color
         } 
 
     def __str__(self) -> str:
